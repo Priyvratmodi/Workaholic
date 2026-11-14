@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthPage } from './components/auth/AuthPage.js';
 import { ProtectedRoute } from './components/auth/ProtectedRoute.js';
 import { DashboardPage } from './components/dashboard/DashboardPage.js';
+import { BoardPage } from './components/board/BoardPage.js';
 import { useAuthStore } from './stores/authStore.js';
 
 const queryClient = new QueryClient({
@@ -33,6 +34,22 @@ export const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/boards/:id"
+            element={
+              <ProtectedRoute>
+                <BoardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/boards/:id/cards/:cardId"
+            element={
+              <ProtectedRoute>
+                <BoardPage />
               </ProtectedRoute>
             }
           />

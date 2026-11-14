@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { requireAuth } from '../middleware/auth.js';
 import { requireBoardPermission } from '../middleware/rbac.js';
 import { validate } from '../middleware/validate.js';
-import { createBoardSchema, updateBoardSchema } from '@workaholic/shared';
+import { createBoardSchema, updateBoardSchema, createListSchema } from '@workaholic/shared';
 import {
   getBoards,
   createBoard,
@@ -13,6 +13,7 @@ import {
   unstarBoard,
   getBoardActivity,
 } from '../controllers/boardController.js';
+import { createList } from '../controllers/listController.js';
 
 const router = Router();
 
@@ -37,5 +38,11 @@ router.delete('/:id/star', requireAuth, requireBoardPermission('view'), unstarBo
 
 // Get board activity feed
 router.get('/:id/activity', requireAuth, requireBoardPermission('view'), getBoardActivity);
+
+// Create a list in this board
+router.post('/:id/lists', requireAuth, requireBoardPermission('edit'), validate(createListSchema), (req, res) => {
+  req.params.boardId = req.params.id;
+  return createList(req, res);
+});
 
 export default router;
