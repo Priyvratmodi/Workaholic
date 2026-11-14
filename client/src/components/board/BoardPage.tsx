@@ -22,6 +22,7 @@ import { ListColumn } from './ListColumn.js';
 import { CardItem } from './CardItem.js';
 import { ActivityDrawer } from './ActivityDrawer.js';
 import { CardModal } from '../card-modal/CardModal.js';
+import { ShareModal } from '../share/ShareModal.js';
 import { getBackgroundClass } from '../../utils/backgrounds.js';
 
 export const BoardPage: React.FC = () => {
@@ -32,6 +33,7 @@ export const BoardPage: React.FC = () => {
   const [searchFilter, setSearchFilter] = useState('');
   const [activeCard, setActiveCard] = useState<CardInfo | null>(null);
   const [isActivityOpen, setIsActivityOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isAddingList, setIsAddingList] = useState(false);
   const [newListTitle, setNewListTitle] = useState('');
 
@@ -373,9 +375,7 @@ export const BoardPage: React.FC = () => {
         onSearchChange={setSearchFilter}
         onToggleStar={() => toggleStarMutation.mutate()}
         onUpdateTitle={(newTitle) => updateTitleMutation.mutateAsync(newTitle)}
-        onOpenShareModal={() => {
-          /* Handled in Milestone 5 Share Modal */
-        }}
+        onOpenShareModal={() => setIsShareModalOpen(true)}
         onToggleActivity={() => setIsActivityOpen(!isActivityOpen)}
         isActivityOpen={isActivityOpen}
       />
@@ -490,6 +490,16 @@ export const BoardPage: React.FC = () => {
           onClose={() => navigate(`/boards/${board.id}`)}
         />
       )}
+
+      {/* Share Board Modal */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        board={board}
+        onMembersChanged={() => {
+          queryClient.invalidateQueries({ queryKey: ['board', boardId] });
+        }}
+      />
     </div>
   );
 };

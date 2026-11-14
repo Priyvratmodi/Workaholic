@@ -2,7 +2,13 @@ import { Router } from 'express';
 import { requireAuth } from '../middleware/auth.js';
 import { requireBoardPermission } from '../middleware/rbac.js';
 import { validate } from '../middleware/validate.js';
-import { createBoardSchema, updateBoardSchema, createListSchema } from '@workaholic/shared';
+import {
+  createBoardSchema,
+  updateBoardSchema,
+  createListSchema,
+  inviteMemberSchema,
+  updateMemberRoleSchema,
+} from '@workaholic/shared';
 import {
   getBoards,
   createBoard,
@@ -14,6 +20,12 @@ import {
   getBoardActivity,
 } from '../controllers/boardController.js';
 import { createList } from '../controllers/listController.js';
+import {
+  getMembers,
+  inviteMember,
+  updateMemberRole,
+  removeMember,
+} from '../controllers/memberController.js';
 
 const router = Router();
 
@@ -44,5 +56,11 @@ router.post('/:id/lists', requireAuth, requireBoardPermission('edit'), validate(
   req.params.boardId = req.params.id;
   return createList(req, res);
 });
+
+// Member management routes
+router.get('/:id/members', requireAuth, requireBoardPermission('view'), getMembers);
+router.post('/:id/members', requireAuth, requireBoardPermission('manageMembers'), validate(inviteMemberSchema), inviteMember);
+router.patch('/:id/members/:userId', requireAuth, requireBoardPermission('manageMembers'), validate(updateMemberRoleSchema), updateMemberRole);
+router.delete('/:id/members/:userId', requireAuth, requireBoardPermission('view'), removeMember);
 
 export default router;
