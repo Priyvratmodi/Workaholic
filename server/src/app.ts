@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import boardRoutes from './routes/boardRoutes.js';
 import listRoutes from './routes/listRoutes.js';
 import cardRoutes from './routes/cardRoutes.js';
+import subRoutes from './routes/subRoutes.js';
 import templateRoutes from './routes/templateRoutes.js';
 import { AppError, sendError } from './utils/errors.js';
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/boards', boardRoutes);
 app.use('/api/lists', listRoutes);
 app.use('/api/cards', cardRoutes);
+app.use('/api', subRoutes);
 app.use('/api/templates', templateRoutes);
 
 // 404 Handler for undefined API routes

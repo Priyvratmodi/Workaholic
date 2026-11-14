@@ -85,3 +85,18 @@ export const createLabelSchema = z.object({
   name: z.string().max(50).optional().nullable(),
   color: z.string().min(1),
 });
+
+export const assignMemberSchema = z.object({
+  userId: z.string(),
+});
+
+export const assignLabelSchema = z.object({
+  labelId: z.string(),
+});
+
+export const createAttachmentSchema = z.object({
+  name: z.string().min(1),
+  url: z.string().min(1),
+  size: z.number().optional().nullable(),
+  mimeType: z.string().optional().nullable(),
+});

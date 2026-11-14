@@ -21,10 +21,11 @@ import { BoardHeader } from './BoardHeader.js';
 import { ListColumn } from './ListColumn.js';
 import { CardItem } from './CardItem.js';
 import { ActivityDrawer } from './ActivityDrawer.js';
+import { CardModal } from '../card-modal/CardModal.js';
 import { getBackgroundClass } from '../../utils/backgrounds.js';
 
 export const BoardPage: React.FC = () => {
-  const { id: boardId } = useParams<{ id: string }>();
+  const { id: boardId, cardId } = useParams<{ id: string; cardId?: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -480,6 +481,15 @@ export const BoardPage: React.FC = () => {
         isOpen={isActivityOpen}
         onClose={() => setIsActivityOpen(false)}
       />
+
+      {/* Card Detail Modal (Deep-linked) */}
+      {cardId && (
+        <CardModal
+          cardId={cardId}
+          board={board}
+          onClose={() => navigate(`/boards/${board.id}`)}
+        />
+      )}
     </div>
   );
 };

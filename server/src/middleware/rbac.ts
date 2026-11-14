@@ -29,13 +29,24 @@ async function resolveBoardId(req: Request): Promise<string | null> {
     return req.params.boardId;
   }
 
+  const url = req.originalUrl || req.baseUrl;
+
   // Check if route is directly on /boards/:id
-  if (req.baseUrl.includes('/boards') && req.params.id) {
+  if (url.includes('/boards') && req.params.id) {
     return req.params.id;
   }
 
+  // Check if checklist-items route /checklist-items/:id (must check before /checklists)
+  if (url.includes('/checklist-items') && req.params.id) {
+    const item = await prisma.checklistItem.findUnique({
+      where: { id: req.params.id },
+      select: { checklist: { select: { card: { select: { list: { select: { boardId: true } } } } } } },
+    });
+    return item?.checklist?.card?.list?.boardId ?? null;
+  }
+
   // Check if listId parameter or list route /lists/:id
-  const targetListId = req.params.listId || (req.baseUrl.includes('/lists') ? req.params.id : null);
+  const targetListId = req.params.listId || (url.includes('/lists') ? req.params.id : null);
   if (targetListId) {
     const list = await prisma.list.findUnique({
       where: { id: targetListId },
@@ -45,7 +56,7 @@ async function resolveBoardId(req: Request): Promise<string | null> {
   }
 
   // Check if cardId parameter or card route /cards/:id
-  const targetCardId = req.params.cardId || (req.baseUrl.includes('/cards') ? req.params.id : null);
+  const targetCardId = req.params.cardId || (url.includes('/cards') ? req.params.id : null);
   if (targetCardId) {
     const card = await prisma.card.findUnique({
       where: { id: targetCardId },
@@ -55,7 +66,7 @@ async function resolveBoardId(req: Request): Promise<string | null> {
   }
 
   // Check if checklistId parameter or checklist route /checklists/:id
-  const targetChecklistId = req.params.checklistId || (req.baseUrl.includes('/checklists') ? req.params.id : null);
+  const targetChecklistId = req.params.checklistId || (url.includes('/checklists') ? req.params.id : null);
   if (targetChecklistId) {
     const cl = await prisma.checklist.findUnique({
       where: { id: targetChecklistId },
@@ -65,7 +76,7 @@ async function resolveBoardId(req: Request): Promise<string | null> {
   }
 
   // Check if comment route /comments/:id
-  if (req.baseUrl.includes('/comments') && req.params.id) {
+  if (url.includes('/comments') && req.params.id) {
     const comment = await prisma.comment.findUnique({
       where: { id: req.params.id },
       select: { card: { select: { list: { select: { boardId: true } } } } },
@@ -73,13 +84,13 @@ async function resolveBoardId(req: Request): Promise<string | null> {
     return comment?.card?.list?.boardId ?? null;
   }
 
-  // Check if checklist-items route /checklist-items/:id
-  if (req.baseUrl.includes('/checklist-items') && req.params.id) {
-    const item = await prisma.checklistItem.findUnique({
+  // Check if attachment route /attachments/:id
+  if (url.includes('/attachments') && req.params.id) {
+    const at = await prisma.attachment.findUnique({
       where: { id: req.params.id },
-      select: { checklist: { select: { card: { select: { list: { select: { boardId: true } } } } } } },
+      select: { card: { select: { list: { select: { boardId: true } } } } },
     });
-    return item?.checklist?.card?.list?.boardId ?? null;
+    return at?.card?.list?.boardId ?? null;
   }
 
   return null;
