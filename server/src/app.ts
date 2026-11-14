@@ -2,6 +2,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/authRoutes.js';
+import boardRoutes from './routes/boardRoutes.js';
+import templateRoutes from './routes/templateRoutes.js';
 import { AppError, sendError } from './utils/errors.js';
 
 export const app = express();
@@ -25,6 +27,8 @@ app.get('/api/health', (_req, res) => {
 
 // Mount Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/boards', boardRoutes);
+app.use('/api/templates', templateRoutes);
 
 // 404 Handler for undefined API routes
 app.use('/api/*', (_req: Request, res: Response) => {
