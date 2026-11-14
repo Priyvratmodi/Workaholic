@@ -1,0 +1,32 @@
+:root {
+  /* Dark Theme Palette (Default) */
+  --bg-canvas: #1D2125;
+  --bg-surface: #101418;
+  --bg-column: #22272B;
+  --bg-card: #2C333A;
+  --bg-card-hover: #333B44;
+  --bg-card-drag: #313539;
+  
+  --border-default: #38414A;
+  --border-subtle: #262A2E;
+  --border-focus: #579DFF;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #B6C2CF;
+  --text-muted: #8C9BAB;
+
+  --accent-primary: #579DFF;
+  --accent-primary-hover: #85B8FF;
+  --accent-success: #4BCE97;
+  --accent-warning: #F5CD47;
+  --accent-danger: #F87168;
+  --accent-purple: #9F8FEF;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  --list-width: 272px;
+}

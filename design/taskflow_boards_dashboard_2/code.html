@@ -1,0 +1,738 @@
+<!DOCTYPE html><html lang="en" style="width: 1280px; height: 1025px; overflow: hidden; position: relative;"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "error-container": "#ffdad6",
+          "on-surface-variant": "#464553",
+          "on-tertiary-container": "#ffe8d1",
+          "on-primary-fixed-variant": "#3533b0",
+          "primary": "#4241bc",
+          "background": "#faf8ff",
+          "surface-dim": "#d2d9f4",
+          "surface-variant": "#dae2fd",
+          "primary-fixed": "#e2dfff",
+          "surface-container": "#eaedff",
+          "outline-variant": "#c7c4d6",
+          "on-secondary-container": "#00714d",
+          "surface": "#faf8ff",
+          "outline": "#777585",
+          "secondary-fixed-dim": "#4edea3",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f2f3ff",
+          "on-error": "#ffffff",
+          "on-surface": "#131b2e",
+          "on-primary": "#ffffff",
+          "on-tertiary-fixed": "#2a1700",
+          "secondary-container": "#6cf8bb",
+          "secondary": "#006c49",
+          "primary-container": "#5b5bd6",
+          "surface-tint": "#4e4ec9",
+          "on-tertiary-fixed-variant": "#653e00",
+          "primary-fixed-dim": "#c1c1ff",
+          "tertiary-container": "#965e00",
+          "inverse-primary": "#c1c1ff",
+          "surface-container-high": "#e2e7ff",
+          "on-error-container": "#93000a",
+          "secondary-fixed": "#6ffbbe",
+          "on-secondary": "#ffffff",
+          "on-primary-fixed": "#0a006b",
+          "error": "#ba1a1a",
+          "tertiary-fixed": "#ffddb8",
+          "on-primary-container": "#edeaff",
+          "on-secondary-fixed": "#002113",
+          "tertiary-fixed-dim": "#ffb95f",
+          "surface-container-highest": "#dae2fd",
+          "tertiary": "#754900",
+          "surface-bright": "#faf8ff",
+          "on-secondary-fixed-variant": "#005236",
+          "inverse-surface": "#283044",
+          "on-background": "#131b2e",
+          "on-tertiary": "#ffffff",
+          "inverse-on-surface": "#eef0ff"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "margin": "1.5rem",
+          "gutter-board": "1.25rem",
+          "gutter": "1rem",
+          "space-sm": "0.5rem",
+          "margin-mobile": "1rem",
+          "space-xl": "1.5rem",
+          "space-xs": "0.25rem",
+          "space-lg": "1rem",
+          "space-md": "0.75rem"
+        },
+        "fontFamily": {
+          "body-lg": ["Inter"],
+          "body-md": ["Inter"],
+          "headline-xl": ["Inter"],
+          "headline-sm": ["Inter"],
+          "mono-sm": ["JetBrains Mono"],
+          "body-sm": ["Inter"],
+          "headline-xl-mobile": ["Inter"],
+          "headline-lg": ["Inter"],
+          "label-md": ["Inter"],
+          "label-sm": ["Inter"],
+          "title-md": ["Inter"]
+        },
+        "fontSize": {
+          "body-lg": ["15px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400"}],
+          "body-md": ["13px", {"lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "400"}],
+          "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.025em", "fontWeight": "600"}],
+          "headline-sm": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+          "mono-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+          "body-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400"}],
+          "headline-xl-mobile": ["26px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+          "headline-lg": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+          "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+          "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+          "title-md": ["14px", {"lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+        }
+      }
+    }
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 h-14 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 flex items-center justify-between px-space-lg select-none"><div class="flex items-center gap-space-md pl-[240px]"><div class="relative flex items-center"><div class="flex items-center bg-surface-container-low/80 rounded-lg px-space-sm py-1.5 gap-space-xs border border-outline-variant/30 hover:border-outline-variant/60 focus-within:border-primary-container focus-within:bg-surface-container-lowest transition-all w-80 shadow-xs"><span class="material-symbols-outlined text-outline text-[16px]">search</span><input class="bg-transparent w-full text-on-surface placeholder:text-outline focus:outline-none font-body-sm text-body-sm" placeholder="Search boards, tasks..." readonly="" type="text"><kbd class="font-mono-sm text-mono-sm bg-surface-container-lowest text-outline px-1.5 py-0.5 rounded border border-outline-variant/40 shadow-xs">⌘K</kbd></div></div></div><div class="flex items-center gap-space-md"><button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Quick Actions" type="button"><span class="material-symbols-outlined text-[18px]">add</span></button><button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative" title="Notifications" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span></button><button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Help &amp; Documentation" type="button"><span class="material-symbols-outlined text-[18px]">help_outline</span></button><div class="h-4 w-px bg-outline-variant/30"></div><div class="flex items-center gap-space-xs"><img alt="Aarav's Avatar" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-container/20 cursor-pointer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDjaNAvFBCPDPNp8YMVC5TPDZZ97pMK4U3qRIOHdZBgTtgMxxgqalWBjc3dAiwc-_Nscynqv9fc5awt-dm3yuzY8SYZriuoFejFMOCAO-z6lgtBOpBDaZXM726SdzohwkrIJ3RkG_fC4KGTc8yPTGzbVGbvb6uF-kP97tqRRdq-xfZKDqkoAny30ZbPDgsmEUExjJ6hEps8AMck6ubjPLvDmm5fFSn1RJ8XpdrjqM"><span class="font-title-md text-title-md text-on-surface font-medium hidden sm:inline-block">Aarav</span></div></div></header><aside class="fixed left-0 top-0 bottom-0 w-[240px] bg-surface-container-low/90 backdrop-blur-md border-r border-outline-variant/30 flex flex-col z-50"><div class="h-14 px-space-md flex items-center border-b border-outline-variant/20"><div class="flex items-center gap-space-sm w-full"><img alt="Workaholic Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCeG2pLejdREBGWYsztTTLTqTMSgZsnIBNK5HNdFNLT_sYTR_k5ehzc-hIPL5nc2UKtnxLKpz-AEIJnfdY0dSeJc9JXSN2fzOuVeJ7gxRBiVNoPM344diljsIsPmdjPYn6mGnftiGO8QLFAu6kS-3ruX_VexnKo4xj-Dco3yKkZ2oKAidHkZ2wo16w1E1z92_9Rvfmc05XQtA1q43ptZVMDSJ_wHCgcvDzSL9lxkWIx"><span class="font-title-md text-title-md text-on-surface font-semibold tracking-tight">Workaholic</span></div></div><div class="p-space-md border-b border-outline-variant/20"><button class="w-full flex items-center justify-between p-space-xs rounded-lg hover:bg-surface-container-high transition-colors text-left group" type="button"><div class="flex items-center gap-space-xs overflow-hidden"><div class="w-6 h-6 rounded-md bg-primary-container/20 text-primary flex items-center justify-center font-label-sm text-label-sm font-semibold">AC</div><div class="flex flex-col truncate"><span class="font-title-md text-title-md text-on-surface truncate leading-tight">Acme Corp</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Design Team</span></div></div><span class="material-symbols-outlined text-outline group-hover:text-on-surface text-[18px]">unfold_more</span></button></div><div class="p-space-md"><div class="px-space-xs mb-space-xs"><span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold text-outline">Workspace</span></div><nav class="flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-xs"><a aria-current="page" class="flex items-center px-space-sm py-2 rounded-lg transition-all bg-primary-container text-on-primary font-semibold shadow-xs" data-path="boards" href="#">Boards</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-md text-body-md" data-path="members" href="#">Members</a><a class="flex items-center px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-md text-body-md" data-path="settings" href="#">Settings</a></nav><div class="mt-space-lg"><button class="w-full flex items-center justify-center gap-space-xs bg-primary-container hover:bg-primary text-on-primary py-2 px-space-md rounded-lg font-label-md text-label-md font-semibold transition-all shadow-sm" type="button"><span class="material-symbols-outlined text-[18px]">add</span><span>Create board</span></button></div></div><div class="mt-auto p-space-md border-t border-outline-variant/20 flex flex-col gap-space-xs"><nav class="flex flex-col gap-1" data-active-classes="bg-primary-container text-on-primary font-semibold shadow-xs"><a class="flex items-center px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all font-body-md text-body-md" data-path="workspace-settings" href="#">Workspace Settings</a></nav><div class="flex items-center justify-between p-space-xs rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer"><div class="flex items-center gap-space-xs"><img alt="Aarav's Profile" class="w-7 h-7 rounded-full object-cover ring-1 ring-primary-container/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDjaNAvFBCPDPNp8YMVC5TPDZZ97pMK4U3qRIOHdZBgTtgMxxgqalWBjc3dAiwc-_Nscynqv9fc5awt-dm3yuzY8SYZriuoFejFMOCAO-z6lgtBOpBDaZXM726SdzohwkrIJ3RkG_fC4KGTc8yPTGzbVGbvb6uF-kP97tqRRdq-xfZKDqkoAny30ZbPDgsmEUExjJ6hEps8AMck6ubjPLvDmm5fFSn1RJ8XpdrjqM"><div class="flex flex-col"><span class="font-title-md text-title-md text-on-surface font-medium leading-none">Aarav</span><span class="font-label-sm text-label-sm text-outline">aarav@acme.io</span></div></div><span class="material-symbols-outlined text-outline text-[18px]">more_vert</span></div></div></aside><div class="pl-[240px]"><main class="pt-14 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1520px] mx-auto px-6 lg:px-10 py-8 flex flex-col gap-10">
+<!-- Top Ambient Glow -->
+<div class="relative w-full">
+<div class="absolute -top-12 left-1/4 w-96 h-36 bg-primary-fixed blur-3xl opacity-40 pointer-events-none rounded-full"></div>
+<div class="absolute top-0 right-1/3 w-80 h-32 bg-secondary-fixed blur-3xl opacity-20 pointer-events-none rounded-full"></div>
+<!-- Header & Greeting Area -->
+<div class="relative flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+<div class="flex flex-col gap-1.5 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed-variant">
+              Acme Design Workspace
+            </span>
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              9 Active Boards
+            </span>
+</div>
+<h1 class="text-headline-xl font-headline-xl text-on-surface tracking-tight">
+            Good morning, Aarav
+          </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant">
+            Here's what your team is orchestrating across sprints, product launches, and brand initiatives.
+          </p>
+</div>
+<!-- Utility Controls -->
+<div class="flex items-center flex-wrap gap-3">
+<!-- Search Boards Input -->
+<div class="relative flex items-center bg-surface-container-lowest rounded-xl shadow-xs border-0 px-3 py-2 w-56 lg:w-64 focus-within:ring-2 focus-within:ring-primary-container transition-all">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2">search</span>
+<input class="w-full bg-transparent text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none" id="boardSearchInput" placeholder="Filter boards..." type="text">
+<kbd class="text-mono-sm font-mono-sm text-outline bg-surface-container-low px-1.5 py-0.5 rounded">⌘F</kbd>
+</div>
+<!-- Sort Dropdown -->
+<div class="relative inline-block text-left">
+<button class="flex items-center gap-2 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface px-3.5 py-2 rounded-xl text-body-sm font-body-sm font-medium shadow-xs transition-colors" id="sortMenuButton" type="button">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">sort</span>
+<span id="currentSortLabel">Recently viewed</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+</button>
+<div class="hidden absolute right-0 mt-2 w-48 rounded-xl bg-surface-container-lowest shadow-xl py-1 z-30 ring-1 ring-black/5" id="sortMenuDropdown">
+<button class="w-full text-left px-4 py-2 text-body-sm font-body-sm hover:bg-surface-container-low text-primary-container font-medium" data-sort="recent">Recently viewed</button>
+<button class="w-full text-left px-4 py-2 text-body-sm font-body-sm hover:bg-surface-container-low text-on-surface" data-sort="alpha">Alphabetical (A-Z)</button>
+<button class="w-full text-left px-4 py-2 text-body-sm font-body-sm hover:bg-surface-container-low text-on-surface" data-sort="tasks">Most active tasks</button>
+</div>
+</div>
+<!-- New Board Primary CTA -->
+<button class="flex items-center gap-2 bg-primary-container hover:bg-primary text-on-primary px-4 py-2 rounded-xl text-title-md font-title-md font-semibold shadow-sm hover:shadow-md transition-all active:scale-[0.98]" onclick="triggerNewBoardModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New board</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Starred Boards Section -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="flex items-center justify-center w-6 h-6 rounded-lg bg-tertiary-fixed text-tertiary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Starred boards</h2>
+<span class="flex items-center justify-center h-5 px-2 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant font-semibold">2</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline">Pinned for quick focus</span>
+</div>
+<!-- Starred Grid (2 featured, 4 col system) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Starred Card 1: Website Redesign -->
+<div class="group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer">
+<!-- Gradient Canvas Header -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-primary-container via-primary to-surface-tint text-on-primary">
+<!-- Subtle abstract wave shapes -->
+<svg class="absolute -right-6 -bottom-8 w-44 h-44 opacity-25 pointer-events-none text-white" fill="currentColor" viewBox="0 0 200 200">
+<path d="M42.7,-62.9C53.9,-54.6,60.8,-40.8,66.4,-26.4C72,-12,76.3,3,72.9,16.4C69.5,29.8,58.4,41.6,46.1,51.8C33.8,62,20.3,70.6,5.3,72.2C-9.7,73.8,-26.2,68.4,-38.4,58.5C-50.6,48.6,-58.5,34.2,-64.1,18.8C-69.7,3.4,-73,-13,-67.2,-25.9C-61.4,-38.8,-46.5,-48.2,-32.8,-55.4C-19.1,-62.6,-6.6,-67.6,5.7,-64.8C18,-62,31.5,-71.2,42.7,-62.9Z" transform="translate(100 100)"></path>
+</svg>
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Design &amp; Dev</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center transition-colors text-amber-300" data-starred="true" title="Starred" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Website Redesign</h3>
+</div>
+</div>
+<!-- Card Body Details -->
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">check_circle</span>
+<span class="font-medium text-on-surface">14</span> active tasks
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">Owner</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<!-- Avatar Stack -->
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Close up photographic avatar of a South Asian male UI design lead with neat hair and spectacles in bright studio light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3UpTtfD2rNRMWzfLnYItAIOOL6sL-Ki47v18TACc17Dpd3Fniawg5TwOsQu68PZSPz12ea8BSJpVrT7XEdQWqQgd8geWGOA1t6Eb4yWFyMrK1qNqLAIFspT-SMWsNOv7KqykazuhPJbzTh1_iL6_8_LLFQjK8Z9unJLPks_hzfNFwkE7-iXnES7B9C9MQJDQfRDQKpSYojZama0Td2ywpFamxE7sQc8DiG9tguhA">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a young female front-end software engineer with curly dark hair against a soft indigo office backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMiehyFAWpoppyS_zJjLg_1xNmQ1mK9MxAz0VW9BywnOP1wNd1a6DLO6DXxUrHwN16gJ9BxPxF9heQ2byU0G1X7ImETXJxztERIDq6QMhiuoF5kruZYBgWTTFKYX-0hv0v_qelcWL1xSpNbQWiHSXVxkr3mHSMM8n9Q3RCWt0Q9d2uYzyJeL9wZcmLPxCjX59CEt7v7tmye6Vp-VS7HV7gr-7Xr_TaqBevGblmwrg">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Friendly male product manager smiling with clean studio background warm daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBGcRJM6XPpd5gepV6u6aX3Pt9q7ThNRU_xN3BHzdOtO7asDcU2-NnUNFXA83RBj6VwEPeYotiJFdrF4WF8nuTTMjS8uxtloGAeNUSbl864FhsfQLE523zEeOGoXTYcKuVgXL60xaQpwxPvQS3HitBfCmi9uZh7Zcp-qXrVScEYxtsXtEL0Vb3mvE53aRNz35ChERZqnLNg8zvnlyne1jO640P787bQ0sWPsjgxvg">
+<div class="inline-flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm font-semibold">+1</div>
+</div>
+<!-- Metadata & Quick Menu -->
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">2h ago</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" title="More options" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Starred Card 2: Mobile App v2.0 -->
+<div class="group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer">
+<!-- Deep sky / Cyan gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-sky-600 via-teal-600 to-emerald-600 text-white">
+<svg class="absolute -right-10 -bottom-10 w-44 h-44 opacity-20 pointer-events-none text-white" fill="currentColor" viewBox="0 0 200 200">
+<polygon points="100,10 40,198 190,78 10,78 160,198"></polygon>
+</svg>
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">iOS &amp; Android</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center transition-colors text-amber-300" data-starred="true" title="Starred" type="button">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Mobile App v2.0</h3>
+</div>
+</div>
+<!-- Card Body Details -->
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">check_circle</span>
+<span class="font-medium text-on-surface">28</span> active tasks
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-surface-container-high text-on-surface font-medium">Member</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Headshot of a modern software engineer wearing headphones outdoors with natural sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXhQB1DOV6P-IhcF-QDt4vhURsO_usKRKg-kJNvcSm_naiDEsHgA6z7Bf6uXyYrfol-3Y0AgZqX2L8CevAQwRWYIWwYhUXEOHID0F-3RtuLLZ8GVAAC6MhFlg7jkVOv7crG3GV2xWDExCqrlZuvpNArhjZjE5XlASS_xePGomzl4-h6TRD5UXJmhdbEMg6FHJ4ShSGrby2XI_grLf58RR18_KFeR6hrgm61apCzCc">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a professional female quality assurance engineer smiling warmly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDba11tC2JFss1IiAAAa-FGj0q88DtYGLLIyDzxFy5HBqNxKISn5OhPqln0MOzNXfv3WPgnc3FSMwLLjx9b3l8espzEtGFb2AFufuLH-vXpfqNHz0VSEXN1MLtvlTy_c_X7x3LK0rhRwvUEiiAFreL4qIQSyZXReTfvNIQydXpKTwCTm6_oYko2j-q83Gmi8g3MzA8lv9mXcEevUIA5ZwXNY8Cw8Nuodmfpw58Y1lw">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Minimalist portrait photo of male product manager with neutral studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu0dMrfuRFKxE9btT-fc07YF2oBKwyAZ1MLUViAsE9tLwRIf2Sp7cteSnsRxqKpJLLSRD7JLkFjrfPZDHv6jwbd0t4BWyEbGWctLiaUoL-4JRktWhqBotcqLRspuvVbBrw0xhW5zn7cbNu-9RoHeCpC8tORCB945IdpcCKFqGg4KZn6LCHGM9xX6hX6zoX-5mvkyqoxq1ixPlVk5PYTGJdazAIwU9HucMZOfwn-bk">
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">Yesterday</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" title="More options" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Starred Placeholder Slot 3 (Visual balance helper in 4-col grid) -->
+<div class="hidden lg:flex flex-col items-center justify-center p-6 rounded-2xl bg-surface-container-low/60 hover:bg-surface-container-high/60 transition-all text-center gap-2 group cursor-pointer" onclick="triggerNewBoardModal()">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-xs group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">star_border</span>
+</div>
+<span class="text-title-md font-title-md text-on-surface font-medium">Pin more boards</span>
+<p class="text-body-sm font-body-sm text-outline">Hover any board and tap the star icon to keep it at top of mind.</p>
+</div>
+<!-- Starred Metric Mini-Chart Widget -->
+
+</div>
+</section>
+<!-- "Your Boards" Section -->
+<section class="flex flex-col gap-5 pt-2">
+<!-- Section Header & Filter Tabs -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex items-center gap-2.5">
+<div class="flex items-center justify-center w-6 h-6 rounded-lg bg-surface-container-high text-on-surface">
+<span class="material-symbols-outlined text-[16px]">grid_view</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Your boards</h2>
+<span class="flex items-center justify-center h-5 px-2 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant font-semibold">7</span>
+</div>
+<!-- Filter Chips / Tabs -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0" id="filterTabs">
+<button class="filter-tab px-3 py-1.5 rounded-lg text-body-sm font-body-sm transition-all text-on-surface-variant font-medium" data-category="all">
+            All boards
+          </button>
+<button class="filter-tab px-3 py-1.5 rounded-lg text-body-sm font-body-sm transition-all hover:bg-surface-container-high hover:text-on-surface text-on-surface-variant font-medium" data-category="personal">
+            Personal
+          </button>
+
+
+
+</div>
+</div>
+<!-- Main 4-Column Board Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="boardsGrid">
+<!-- Board 1: Design System Tokens & Lib -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="design" data-title="design system tokens &amp; lib" style="display: none;">
+<!-- Violet-to-fuchsia gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-violet-600 via-purple-700 to-fuchsia-600 text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Design</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Design System Tokens &amp; Lib</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">tune</span>
+<span class="font-medium text-on-surface">19</span> tokens synced
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">Owner</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a young male designer working on a laptop in modern creative studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwdW3QSdVJ37SKertHGiS0zxdPUOB6QqH_YjcTWGI0R4TnaALfyUMTXvXUY5P05GNwm1ejRVfMX5jNcoEt4VSJEbOY0z6gLTRwdqCFA4Vuvu5r3IMrA2wkP1RHORxNotvvG778NhFH2PMVCUQXDrMBMduqLhjl4MddKIry1INEmiK4ceBiety7zUX5Pvisd0MeHu1rxkOrTzfrA5fd6mjd4gy0Ikw9fbmPpLxKNHw">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="High quality headshot of a female brand designer smiling warmly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABTdkqsJDnHIEwdtR6XEIOEu_QRxJj0u7KzoammAZmQzgsFKTdBCjbXiNM68K6--OG5gHybSL9bW7cDeiyH-suT70HmUC_Lab6Z1S6pldn-_g-HzL5G9B3FPasZ6l8BJoJcoar6Rbj40zDMLRjoaox7BA9WQ6MihjmC8sgZGJdKH6b7zy6LosVG48MgkjVpqM3BcWqi_ess03_c3wYR0FuCZQs_qqza6aZOR-lkNk">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Creative technologist male headshot in crisp natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCgE4iIyw0ko69RuPOexwKuvFdx2ZLZ2KAlftxuEfjD9B9BJbEPZzMbvu_3lBicVI_cvB9U0RmDoUEwxCGmPNvEXal3xFOF4z8h5htnhaDNnl01s-uAGyKQ57KkxO5ESMldlcbduIhCV12aq-tgWNkSQdh6urt3L5K1LBHOg4pwdw_XNDgpe5MSirR4Yw8dLewjMAJ-vKr4RL9ipxG2S3k2jMQrzjvhzwdcrtZ28Y">
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">3h ago</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 2: Q4 Marketing Campaigns -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="marketing" data-title="q4 marketing campaigns" style="display: flex;">
+<!-- Warm amber / peach sunset gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Growth</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Q4 Marketing Campaigns</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">campaign</span>
+<span class="font-medium text-on-surface">32</span> initiatives
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-surface-container-high text-on-surface font-medium">Member</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a female marketing strategist with bright energetic smile in sunlit workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4b-Eaov6gehAemnIJmUlQZaHEyhDLL5cf7_tlrav11hzphl_-neOkQVh50MiqpTZYgTZQrtB_Z6UxFSZKrbZolur6xIXIejKnpYus5A2EkbEFsqY6l3Ex4-jseUCJkdh9WQZmOXPsGdA4dXcHycR85zJwKN5TZvhpju1h_TjpRGBm_IrhEb1KRTAxyE2w4EJeBRsskC6JyKMEX5MfKPAKLWdIA_onf339DmltUZs">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Headshot of a male content copywriter with warm neutral lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJvbCUuTr5wASs3EW9sGGsTNcoTJqFOzUGTw970lX3lleFVbH4rFmZlmVrRVktmxPFJLQIEVrm4Lm92xjsUSwFbwAfRjl3yRg-al8HP6BOVShI-VY6u-IxbwWEcfVsMG0eW0DcuhWZJ42LmERNfO7Q650e9JKP7nipH5LuRm0u1VETN2obUaxFsXKqANkdS8awqhmowSmj0pHHUWaOchI35SwsZ4rAOuYK9KZscbo">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait of an analytics specialist male in casual attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB1tWO93_bSoN-EfFqtowKyoD4XzbEf1j1UJQCCLwKM-myP86us0USVHkVjK1aJlkiMFm_7Z-sT1H3B2wfFx2Xwv6rWiIuC6c9ngovqauMknXSf64ffILUvamBVewM1uyW1TO2xiCK0S2AslaPQ1i0abn2eQzPyBPWJBdpVVcA319KWNgRGxB3tHb3CkaA7XtXaBq4e-IjW5M3BDiME5-nGexz7sXwPNjBH4z-Hec">
+<div class="inline-flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm font-semibold">+2</div>
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">2d ago</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 3: Core Platform API & Auth -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="engineering" data-title="core platform api &amp; auth" style="display: none;">
+<!-- Teal-to-emerald gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-800 text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Backend</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Core Platform API &amp; Auth</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">terminal</span>
+<span class="font-medium text-on-surface">11</span> PRs linked
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-surface-container-low text-on-surface-variant font-medium">Viewer</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a male security architect with serious confident look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMTz147eVXE1vnUG3V77E_5R7KOdhY-zQ1rwinF3lKeW_GnLl1LebLx3b1s8jOuqshJ_bpQCn-9LHMFX6os-o1MSprlP7V9_TEIDXcDBibHNTnlrG1kaZFVBw_Uf_MK4pz-E6ppVIexrfyaKsnmmwrYFKEQQG68uKq9OoYpPcf9xQ_FHhOnZpb5-_X8vP-n9HYFzOaqxJsvMCDlHxfUfLCExgIG-8T03IUSxwJzHE">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Headshot of female cloud infrastructure engineer in high-tech setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz-hYGDMRVRcklRU1vl-_66zfh9gAiISUGgmGqRZgdAAUSFyOCtH28SEEdR4RThD0yxjU5OydkP4D8x865pFSW-zgfMVzKXYyGcIXYyQbDmtKeND7txoXSb2EtFyeTmh_G_6x6SR-KilQEdwO3xp5nzQxuWFHuuXrsYm11ZzeOKFX7D9v01RSN7unWg0oAvAVy95sKkykJHUXOVcyWFhbpWCyKcXpkk5SRYgtcRhs">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Male systems engineer headshot with clear studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYeXEdKAbWJHETEx2L6dH4HVkbId9LgIgDM0ILgavufkdxu0xSnkiyhdS0xbB4-_0kAgimOAgLILG7wagCSZsenagZGXLDxIPyeUW4jLhkDdPMv4pAR5PVWRfKuxWiAl21G42rzaWF9j-q30_530obMD82wH02_l4TQpued4AdM1KO-3ZXvJJiejy2gbasasVBz95clJjeIj5x3xRBciOI-Rbn4sbf9rEu5eN8K9c">
+<div class="inline-flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm font-semibold">+1</div>
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">4d ago</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 4: Customer Journey Mapping -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="design" data-title="customer journey mapping" style="display: none;">
+<!-- Rose-to-coral gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-rose-500 via-pink-600 to-rose-700 text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Research</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Customer Journey Mapping</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">conversion_path</span>
+<span class="font-medium text-on-surface">8</span> stages
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-surface-container-high text-on-surface font-medium">Member</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a female UX researcher wearing stylish tortoiseshell glasses." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAakksDmD9fSeQ2Tra_9CdLIdoFfQh0Lc82Hi4JMceQF2V3E_BV1YEBxI715clOf_P_dCXyhCbdjwF1ZpoO19HqA5pvDy7ifvJ5-xxOAIPYMQ2R1nl5nw8okFsauDkmhJJa-REbidDilvtGvVbpb5aeqWTnyGS72St39iiCVeCDe2v3dSkcx_ExNn16gme3k5UGZXBeMe-t1ac-rGuTFppMJgd5U1u5rr01L8dS_88">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Friendly male product designer smiling during an ideation session." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuYqTRD3nv-duvkm9qeHfQCswx7jK8bR1CWNS5uTSnc4JqjWHK4yB23aKAdf8Z0ydBD0MXWl5zSf1270cO_5Q1RmGV5SyZrMDCtLLVhbUiwY2u6lUAi00WZruiCPbjtvCV18SiaClgoBpH4_-dgqETMepgJGRcNNKsof0byJp3hVrpoMF_3VFkrwGxvtbofjUtjILT9LHCII4QJv_UT_ktROF4dOuVhoL27wzajjc">
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">1w ago</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 5: Brand Guidelines 2025 -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="design" data-title="brand guidelines 2025" style="display: none;">
+<!-- Royal blue-to-indigo gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-blue-700 via-indigo-700 to-primary-container text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Brand</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Brand Guidelines 2025</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">palette</span>
+<span class="font-medium text-on-surface">24</span> assets
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">Owner</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Headshot of creative director in modern architectural agency space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC_HBLIdbn2CZH1KTDmAuUwODTXTncLgGtQ0pRmMVd8uZngvkLpiFHOBK76stm2bX6q-Yr2qHBJhDes4WKC2WpxHZ3SrEMG3uviTNYn02xwzu-offIel-C7D0z56vYrUx10MB_IGwvxsoPya1id3z-qOIXQ_xl9z1M9XMqc6eAy9jkVXsJYigA7hQnc5k7di4OLaJYAaX_VQMwaONZx3snDy9g0bjHXpqIBBUF-24">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a young female graphic designer smiling outdoors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpFdw4soJQmeyeKWgTsH81sAHH7jMNWKN6PqY1H3RCSS0UKwHnl-x360o8Wj7-9OOLZTfLaGOYEHBQ8XWXTO6NcsdwaReS23hbYaDlvme6opifHpv0XySKiSby5nxdZ7mf9a6klbvlNS7-zhUL_pP0U-muIOYsEbk22q-UNJv0WPThgm2XDylyE-SivSTi9s4k8hiEIcfmoICqZA2n7l1bnQdktp7RrF3sQzdz0qw">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Male motion graphic artist portrait in dynamic rim lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8bvYTGnEMg8DtRlcDgGJ9A5WZOU7QnUKHiIrB59fShrG1EJnom7UUMslOeQac9oXWPdJqjw_4zXLUBW6B_UCXRck1Au-RYcQCMoMtjzpSP7FZRDGEkwMnozK2xePKj1SOcmOCLyzknhiQ4Lg1M11DXZMC9jFCJi1wCU2J9LDNQrCbriGq-UmQXdczIxcK0V623iOl_bIBd1Yq-iYqzH4bR4vVe3fOOg-0qq4BOUE">
+<div class="inline-flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm font-semibold">+3</div>
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">Oct 24</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 6: Growth & Retention Sprints -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="marketing" data-title="growth &amp; retention sprints" style="display: flex;">
+<!-- Lime-to-emerald gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-lime-600 via-emerald-600 to-teal-700 text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Experiments</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Growth &amp; Retention Sprints</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">rocket_launch</span>
+<span class="font-medium text-on-surface">17</span> tests live
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-surface-container-low text-on-surface-variant font-medium">Viewer</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait photo of a data growth analyst male in bright contemporary startup office." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx56ibKf8RtqLGzrTW6gHLqXzuRSIob21QQx7yCP2eLfGCm2TO0EC08e4Cjm3mfnPbUcmpRZ8vxcKmWz6Q6jkr02pNKFXvfqTV_km8Ayak7sDF7jEu6LCfSOwbCG3YG-ohSo2_g6hUq6L6T2--mdw8RH1Y-QSsa_dJF2wh72uS8X8uVe-io7tvEO94-hpmy9irWinOecIwF1la1711-eTPpB3AbiROhzE24bfCiq0">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="High quality headshot of a female CRM specialist smiling warmly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdnYgoml4cQ-1HwmtWXZfQJOKC6XfJuLdnEjZQr33n5Z6KaX3BluYck4wZPqxzIPwmHD0WXst5ZXu_F2KfzwF6twnmzx8IaSWe0H7OlguQyI0W3Txg1GSUg0Nqm7pAya6SvBk4DMwBs4SfUX8zRxO1Mqj-9YTlhAG4tL2f2wUXJxUAV5DUxaZO-sGrRepS72dAVlYzOtWvaaH_HsGp6FzDST0WfkAtS8HfGAvmLd4">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait of an experiment developer smiling in cool daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMnPzqlvl2uscA1ZVmpB1-zgv5acbLO300TQbgMh_olzQiv8S4iW5t5jhO8WiRjAmFiguREmQSkfyilypHeV86sKAxX-44GdQGldnrVYj7ZRGdhZkNlsOtvDI9bfoShh7X-QOMa77jKl5lJHOhYXCc-hwj5rRMzTdomzSerei5_NWBntiZX2r-glDTP4XKPdZmAuUPvyuhIcOO4N-taCasyLH5i8Fz0FrwzGvZ2MQ">
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">Oct 18</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 7: Personal Deep Work (Personal Category) -->
+<div class="board-card group relative rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer" data-category="personal" data-title="aarav's focus &amp; experiments" style="display: none;">
+<!-- Deep slate / primary indigo subtle gradient -->
+<div class="h-32 w-full p-4 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-slate-700 via-indigo-900 to-slate-900 text-white">
+<div class="flex items-center justify-between z-10">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-white/20 backdrop-blur-md text-white font-medium">Personal</span>
+<button class="star-toggle w-7 h-7 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-colors text-white/80 hover:text-white" data-starred="false" title="Star board" type="button">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<div class="z-10">
+<h3 class="text-headline-sm font-headline-sm text-white tracking-tight leading-snug">Aarav's Focus &amp; Experiments</h3>
+</div>
+</div>
+<div class="p-4 flex flex-col justify-between flex-1 gap-4 bg-surface-container-lowest">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">lock</span>
+<span class="font-medium text-on-surface">5</span> private notes
+              </div>
+<span class="px-2 py-0.5 rounded-md text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">Owner</span>
+</div>
+<div class="flex items-center justify-between pt-2 border-t-0">
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Portrait avatar of Aarav, a South Asian design leader in casual black crewneck." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6AjIv2RTc__FN78mRmEVxblkQ2mC20rtXXCM4iBenhlOgACm7W2lBQW65UU4U9lFGjx_1Lr2Zh5dKj5yZxZTaHPvRHiurITwS8IXDfQBm3u7lRL_ke2K9vg-4e0C4YFTbL2mfn-YlFqnMQO3bwl5aXph51GfAMqKWmCrV1OwsSYnYAKD8NDdW0IGeurgJBsSjrZpxW0nnTFLGm8p5MW1ShUzpUQ4FtAysi1MyotU">
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="text-mono-sm font-mono-sm">Yesterday</span>
+<button class="w-7 h-7 rounded-lg hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Board 8: Create New Board Tile -->
+<button class="min-h-[220px] rounded-2xl bg-surface-container-low/40 hover:bg-surface-container-high/60 transition-all duration-300 p-6 flex flex-col items-center justify-center text-center gap-3.5 group cursor-pointer border-0 shadow-xs hover:shadow-md" onclick="triggerNewBoardModal()" type="button">
+<div class="w-12 h-12 rounded-2xl bg-surface-container-lowest text-primary-container shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:bg-primary-container group-hover:text-on-primary transition-all duration-300">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">Create new board</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant max-w-[210px]">Use a blank canvas or start with team templates</p>
+</div>
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-primary font-semibold mt-1">
+            Browse templates <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</span>
+</button>
+</div>
+</section>
+<!-- Bottom Productivity Bar / Recent Activity Drawer Hint -->
+
+</div>
+<!-- Interactive New Board Modal -->
+<div class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/30 backdrop-blur-sm transition-opacity" id="newBoardModal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full shadow-2xl p-6 flex flex-col gap-5 relative animate-in fade-in zoom-in-95 duration-200">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">space_dashboard</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Create a board</h3>
+</div>
+<button class="w-8 h-8 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container flex items-center justify-center transition-colors" onclick="triggerNewBoardModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Board Name Input -->
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-on-surface font-medium">Board title</label>
+<input class="px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline text-body-md font-body-md focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary-container outline-none transition-all" id="modalBoardTitle" placeholder="e.g. Q1 Product Roadmap, Marketing Hub..." type="text">
+</div>
+<!-- Theme Color Gradient Picker -->
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-on-surface font-medium">Cover gradient</label>
+<div class="flex items-center gap-2.5">
+<button class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-container to-surface-tint ring-2 ring-primary-container ring-offset-2" type="button"></button>
+<button class="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-500 to-emerald-500 hover:scale-105 transition-transform" type="button"></button>
+<button class="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 hover:scale-105 transition-transform" type="button"></button>
+<button class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-rose-500 hover:scale-105 transition-transform" type="button"></button>
+<button class="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 hover:scale-105 transition-transform" type="button"></button>
+</div>
+</div>
+<!-- Visibility / Team Selector -->
+<div class="flex flex-col gap-1.5">
+<label class="text-label-md font-label-md text-on-surface font-medium">Workspace visibility</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center gap-2.5 p-3 rounded-xl bg-surface-container-low cursor-pointer ring-1 ring-primary-container">
+<span class="material-symbols-outlined text-primary text-[20px]">groups</span>
+<div class="flex flex-col text-left">
+<span class="text-title-md font-title-md text-on-surface leading-tight">Workspace</span>
+<span class="text-label-sm font-label-sm text-outline">All 18 members</span>
+</div>
+</div>
+<div class="flex items-center gap-2.5 p-3 rounded-xl bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-outline text-[20px]">lock</span>
+<div class="flex flex-col text-left">
+<span class="text-title-md font-title-md text-on-surface leading-tight">Private</span>
+<span class="text-label-sm font-label-sm text-outline">Only you &amp; invitees</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-end gap-2.5 pt-2">
+<button class="px-4 py-2 rounded-xl text-body-sm font-body-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors" onclick="triggerNewBoardModal()" type="button">
+          Cancel
+        </button>
+<button class="px-4 py-2 rounded-xl bg-primary-container hover:bg-primary text-on-primary text-title-md font-title-md font-semibold shadow-sm transition-all" onclick="triggerNewBoardModal()" type="button">
+          Create board
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Filter tabs interactivity
+  const filterTabs = document.querySelectorAll('.filter-tab');
+  const boardCards = document.querySelectorAll('.board-card');
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => {
+        t.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-xs', 'font-semibold');
+        t.classList.add('text-on-surface-variant', 'font-medium');
+      });
+      tab.classList.add('bg-primary-container', 'text-on-primary', 'shadow-xs', 'font-semibold');
+      tab.classList.remove('text-on-surface-variant', 'font-medium');
+
+      const cat = tab.getAttribute('data-category');
+      boardCards.forEach(card => {
+        if (cat === 'all' || card.getAttribute('data-category') === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Search input filtering
+  const boardSearch = document.getElementById('boardSearchInput');
+  if (boardSearch) {
+    boardSearch.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      boardCards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        if (title.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Star toggle click handler
+  document.querySelectorAll('.star-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isStarred = btn.getAttribute('data-starred') === 'true';
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (isStarred) {
+        btn.setAttribute('data-starred', 'false');
+        btn.classList.remove('text-amber-300');
+        btn.classList.add('text-white/80');
+        icon.style.fontVariationSettings = "'FILL' 0";
+      } else {
+        btn.setAttribute('data-starred', 'true');
+        btn.classList.remove('text-white/80');
+        btn.classList.add('text-amber-300');
+        icon.style.fontVariationSettings = "'FILL' 1";
+      }
+    });
+  });
+
+  // Modal toggle
+  function triggerNewBoardModal() {
+    const modal = document.getElementById('newBoardModal');
+    if (!modal) return;
+    if (modal.classList.contains('hidden')) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => document.getElementById('modalBoardTitle')?.focus(), 50);
+    } else {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  // Sort dropdown
+  const sortBtn = document.getElementById('sortMenuButton');
+  const sortDropdown = document.getElementById('sortMenuDropdown');
+  const sortLabel = document.getElementById('currentSortLabel');
+
+  if (sortBtn && sortDropdown) {
+    sortBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sortDropdown.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('#sortMenuDropdown button').forEach(item => {
+      item.addEventListener('click', () => {
+        if (sortLabel) sortLabel.textContent = item.textContent;
+        sortDropdown.classList.add('hidden');
+      });
+    });
+
+    window.addEventListener('click', () => {
+      if (!sortDropdown.classList.contains('hidden')) {
+        sortDropdown.classList.add('hidden');
+      }
+    });
+  }
+</script></main></div>
+
+
+
+
+
+</body></html>
