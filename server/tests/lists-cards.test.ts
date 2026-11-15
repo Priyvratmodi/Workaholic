@@ -159,6 +159,28 @@ describe('Lists & Cards API Integration Tests', () => {
     expect(updateRes.status).toBe(403);
   });
 
+  it('PATCH /api/lists/:id should update list color and persist in board bundle', async () => {
+    const res = await request(app)
+      .patch(`/api/lists/${list1Id}`)
+      .set('Cookie', ownerCookie)
+      .send({
+        color: 'sky',
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.list.color).toBe('sky');
+
+    // Verify GET /api/boards/:id returns the list with the updated color
+    const boardBundle = await request(app)
+      .get(`/api/boards/${boardId}`)
+      .set('Cookie', ownerCookie);
+
+    expect(boardBundle.status).toBe(200);
+    const updatedList = boardBundle.body.board.lists.find((l: any) => l.id === list1Id);
+    expect(updatedList).toBeDefined();
+    expect(updatedList.color).toBe('sky');
+  });
+
   it('DELETE /api/cards/:id should delete card', async () => {
     const res = await request(app)
       .delete(`/api/cards/${cardId}`)

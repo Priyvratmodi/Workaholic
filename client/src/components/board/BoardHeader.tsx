@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BoardBundle } from '@workaholic/shared';
+import { Icon } from '../ui/Icon.js';
+import { AvatarStack } from '../ui/Avatar.js';
+import { AccountMenu } from '../navigation/AccountMenu.js';
 
 interface BoardHeaderProps {
   board: BoardBundle;
@@ -9,6 +12,7 @@ interface BoardHeaderProps {
   onToggleStar: () => void;
   onUpdateTitle: (newTitle: string) => Promise<void>;
   onOpenShareModal: () => void;
+  onOpenAISummary?: () => void;
   onToggleActivity: () => void;
   isActivityOpen: boolean;
 }
@@ -20,6 +24,7 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
   onToggleStar,
   onUpdateTitle,
   onOpenShareModal,
+  onOpenAISummary,
   onToggleActivity,
   isActivityOpen,
 }) => {
@@ -51,41 +56,39 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
     }
   };
 
-  const roleBadge = {
-    owner: { text: 'Owner', class: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
-    member: { text: 'Member', class: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
-    viewer: { text: 'Viewer', class: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-  }[board.userRole];
-
   return (
     <div className="flex flex-col w-full z-20">
-      {/* Read-Only Banner for Viewer (matches taskflow_kanban_board_viewer_read_only) */}
+      {/* Read-Only Banner for Viewer */}
       {isReadOnly && (
-        <div className="bg-[#579DFF]/15 border-b border-[#579DFF]/30 px-6 py-2 flex items-center justify-between text-xs text-[#85B8FF]">
+        <div className="bg-primary/10 border-b border-primary/20 px-6 py-2.5 flex items-center justify-between text-xs text-text-primary">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">visibility</span>
-            <span className="font-semibold">Read-Only Mode:</span>
-            <span>You have viewer permissions. You can inspect cards and discussion, but editing is disabled.</span>
+            <Icon name="visibility" size={18} className="text-primary" />
+            <span className="font-semibold text-text-primary">Read-Only Mode:</span>
+            <span className="text-text-muted">You have viewer permissions. You can inspect cards and discussion, but editing is disabled.</span>
           </div>
-          <span className="text-[11px] bg-[#579DFF]/20 px-2 py-0.5 rounded-full border border-[#579DFF]/40">
-            Viewer Access
-          </span>
+          <button
+            type="button"
+            className="text-[11px] bg-surface-container hover:bg-surface-container-high text-text-primary px-2.5 py-1 rounded-lg border border-border font-medium flex items-center gap-1.5 transition shadow-2xs"
+          >
+            <Icon name="visibility" size={14} className="text-primary" />
+            <span>Viewer access</span>
+          </button>
         </div>
       )}
 
       {/* Main Board Sub-Header */}
-      <header className="h-14 bg-[#1D2125]/80 backdrop-blur-md border-b border-[#38414A] px-6 flex items-center justify-between select-none">
+      <header className="h-14 bg-surface/85 backdrop-blur-md border-b border-border px-6 flex items-center justify-between select-none">
         {/* Left: Breadcrumbs & Title */}
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => navigate('/boards')}
-            className="flex items-center gap-1.5 text-xs text-[#8C9BAB] hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-xs text-text-muted hover:text-text-primary transition-colors"
           >
-            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+            <Icon name="arrow_back" size={16} />
             <span>Boards</span>
           </button>
-          <span className="text-[#38414A] text-sm">/</span>
+          <span className="text-text-muted text-sm select-none">/</span>
 
           <div className="flex items-center gap-2">
             {isEditingTitle && !isReadOnly ? (
@@ -102,13 +105,13 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
                     setIsEditingTitle(false);
                   }
                 }}
-                className="bg-[#22272B] text-white text-base font-bold px-2 py-0.5 rounded-lg border border-[#579DFF] focus:outline-none"
+                className="bg-surface-container text-text-primary text-base font-bold px-2 py-0.5 rounded-lg border border-primary focus:outline-none"
               />
             ) : (
               <h1
                 onClick={() => !isReadOnly && setIsEditingTitle(true)}
-                className={`text-base font-bold text-white tracking-tight ${
-                  !isReadOnly ? 'cursor-pointer hover:text-[#579DFF]' : ''
+                className={`text-base font-bold text-text-primary tracking-tight ${
+                  !isReadOnly ? 'cursor-pointer hover:text-primary' : ''
                 }`}
                 title={!isReadOnly ? 'Click to rename board' : undefined}
               >
@@ -120,23 +123,20 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
             <button
               type="button"
               onClick={onToggleStar}
-              className="p-1 rounded-lg text-[#8C9BAB] hover:text-[#F5CD47] transition-colors"
+              className="p-1 rounded-lg text-text-muted hover:text-accent-warning transition-colors"
               title={board.isStarred ? 'Unstar board' : 'Star board'}
             >
-              <span
-                className={`material-symbols-outlined text-[20px] ${
-                  board.isStarred ? 'text-[#F5CD47]' : ''
-                }`}
-              >
-                {board.isStarred ? 'star' : 'star_border'}
-              </span>
+              <Icon
+                name={board.isStarred ? 'star' : 'star_border'}
+                filled={board.isStarred}
+                size={20}
+                className={board.isStarred ? 'text-accent-warning' : ''}
+              />
             </button>
 
-            {/* Role Badge */}
-            <span
-              className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${roleBadge.class}`}
-            >
-              {roleBadge.text}
+            {/* Role Badge: High-contrast pill */}
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-surface-container-high text-text-primary border border-border shadow-2xs">
+              {board.userRole}
             </span>
           </div>
         </div>
@@ -145,45 +145,50 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
         <div className="flex items-center gap-3">
           {/* Card Filter Input */}
           <div className="relative flex items-center">
-            <span className="material-symbols-outlined absolute left-2.5 text-[#8C9BAB] text-[16px]">
-              search
-            </span>
+            <Icon name="search" size={16} className="absolute left-2.5 text-text-muted" />
             <input
               type="text"
               value={searchFilter}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Filter tasks..."
-              className="bg-[#22272B] text-white placeholder-[#8C9BAB] text-xs rounded-xl pl-8 pr-3 py-1.5 border border-[#38414A] focus:border-[#579DFF] focus:outline-none w-48 transition-all"
+              className="bg-surface-container text-text-primary placeholder:text-text-muted text-xs rounded-xl pl-8 pr-3 py-1.5 border border-border focus:border-primary focus:outline-none w-48 transition-all"
             />
           </div>
 
           {/* Member Avatars Stack */}
-          <div className="flex items-center -space-x-1.5 overflow-hidden">
-            {board.members.slice(0, 4).map((m, idx) => (
-              <div
-                key={m.id || idx}
-                className="w-7 h-7 rounded-full bg-[#38414A] text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-[#1D2125]"
-                title={`${m.user.name} (${m.role})`}
-              >
-                {m.user.name.slice(0, 2).toUpperCase()}
-              </div>
-            ))}
-            {board.members.length > 4 && (
-              <div className="w-7 h-7 rounded-full bg-[#22272B] text-[#8C9BAB] text-[10px] font-bold flex items-center justify-center ring-2 ring-[#1D2125]">
-                +{board.members.length - 4}
-              </div>
-            )}
-          </div>
+          <AvatarStack
+            users={board.members.map((m) => ({
+              id: m.user.id,
+              name: m.user.name,
+              avatarUrl: m.user.avatarUrl,
+            }))}
+            size={28}
+            max={4}
+          />
 
           {/* Share Button (Owner only per SPEC) */}
           {isOwner && (
             <button
               type="button"
               onClick={onOpenShareModal}
-              className="flex items-center gap-1.5 bg-[#579DFF] hover:bg-[#85B8FF] text-[#1D2125] text-xs font-semibold px-3 py-1.5 rounded-xl shadow-sm transition-all"
+              className="flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-primary-on-primary text-xs font-semibold px-3 py-1.5 rounded-xl shadow-sm transition-all"
             >
-              <span className="material-symbols-outlined text-[16px]">person_add</span>
+              <Icon name="person_add" size={16} />
               <span>Share</span>
+            </button>
+          )}
+
+          {/* AI Board Summary Button */}
+          {onOpenAISummary && (
+            <button
+              type="button"
+              onClick={onOpenAISummary}
+              aria-label="AI Board Summary"
+              className="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high text-primary border border-primary/30 hover:border-primary/50 text-xs font-semibold px-3 py-1.5 rounded-xl shadow-2xs transition-all"
+              title="AI Board Summary"
+            >
+              <Icon name="auto_awesome" size={16} className="text-primary" />
+              <span className="hidden sm:inline">AI Summary</span>
             </button>
           )}
 
@@ -191,15 +196,21 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
           <button
             type="button"
             onClick={onToggleActivity}
+            aria-label="Activity Feed"
             className={`w-8 h-8 rounded-xl flex items-center justify-center border transition-colors ${
               isActivityOpen
-                ? 'bg-[#579DFF]/20 text-[#579DFF] border-[#579DFF]/40'
-                : 'text-[#8C9BAB] hover:text-white hover:bg-[#2C333A] border-[#38414A]'
+                ? 'bg-accent-subtle text-primary border-primary/40'
+                : 'text-text-body hover:text-text-primary hover:bg-surface-container border-border'
             }`}
             title="Activity Feed"
           >
-            <span className="material-symbols-outlined text-[18px]">history</span>
+            <Icon name="history" size={18} />
           </button>
+
+          <div className="h-4 w-px bg-border"></div>
+
+          {/* Account Menu */}
+          <AccountMenu />
         </div>
       </header>
     </div>

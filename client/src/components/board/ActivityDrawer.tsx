@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityInfo } from '@workaholic/shared';
 import { apiRequest } from '../../api/client.js';
+import { Icon } from '../ui/Icon.js';
 
 interface ActivityDrawerProps {
   boardId: string;
@@ -72,44 +73,44 @@ export const ActivityDrawer: React.FC<ActivityDrawerProps> = ({
 
   return (
     <div
-      className="fixed inset-y-0 right-0 z-40 w-80 bg-[#22272B] border-l border-[#38414A] shadow-2xl flex flex-col text-white animate-in slide-in-from-right duration-200"
+      className="fixed inset-y-0 right-0 z-40 w-80 bg-menu border-l border-border shadow-2xl flex flex-col text-text-primary animate-in slide-in-from-right duration-200"
     >
       {/* Header */}
-      <div className="h-14 px-4 flex items-center justify-between border-b border-[#38414A]">
+      <div className="h-14 px-4 flex items-center justify-between border-b border-border">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#579DFF] text-[20px]">history</span>
+          <Icon name="history" size={20} className="text-primary" />
           <h3 className="text-sm font-semibold">Board Activity</h3>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="w-8 h-8 rounded-lg text-[#8C9BAB] hover:text-white hover:bg-[#2C333A] flex items-center justify-center transition-colors"
+          className="w-8 h-8 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container-high flex items-center justify-center transition-colors"
         >
-          <span className="material-symbols-outlined text-[18px]">close</span>
+          <Icon name="close" size={18} />
         </button>
       </div>
 
       {/* Activity List */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
         {isLoading ? (
-          <div className="flex items-center justify-center py-8 text-xs text-[#8C9BAB]">
+          <div className="flex items-center justify-center py-8 text-xs text-text-muted">
             Loading activity...
           </div>
         ) : activities.length === 0 ? (
-          <div className="text-center py-8 text-xs text-[#8C9BAB]">
+          <div className="text-center py-8 text-xs text-text-muted">
             No activity recorded yet.
           </div>
         ) : (
           activities.map((act) => (
             <div key={act.id} className="flex items-start gap-2.5 text-xs">
-              <div className="w-6 h-6 rounded-full bg-[#38414A] text-white text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-full bg-surface-container-high text-text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                 {act.user?.name.slice(0, 2).toUpperCase()}
               </div>
               <div className="flex flex-col gap-0.5">
-                <p className="text-[#B6C2CF] leading-relaxed">
+                <p className="text-text-secondary leading-relaxed">
                   {formatActivityText(act)}
                 </p>
-                <span className="text-[10px] text-[#8C9BAB]">
+                <span className="text-[10px] text-text-muted">
                   {new Date(act.createdAt).toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit',

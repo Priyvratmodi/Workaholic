@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BoardBundle, Role } from '@workaholic/shared';
 import { inviteMember, updateMemberRole, removeMember } from '../../api/members.js';
 import { useAuthStore } from '../../stores/authStore.js';
+import { Icon } from '../ui/Icon.js';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -94,40 +95,38 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg bg-[#22272B] border border-[#38414A] rounded-2xl shadow-2xl p-6 flex flex-col gap-5 text-white max-h-[85vh] overflow-y-auto"
+        className="w-full max-w-lg bg-menu border border-border rounded-2xl shadow-2xl p-6 flex flex-col gap-5 text-text-primary max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-start justify-between pb-2 border-b border-[#38414A]">
+        <div className="flex items-start justify-between pb-2 border-b border-border">
           <div className="flex flex-col">
-            <h2 className="text-base font-bold text-white tracking-tight">
+            <h2 className="text-base font-bold text-text-primary tracking-tight">
               Share “{board.title}” board
             </h2>
-            <p className="text-xs text-[#8C9BAB] mt-0.5">
+            <p className="text-xs text-text-muted mt-0.5">
               Invite teammates and collaborate in real-time with role-based controls.
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-[#8C9BAB] hover:text-white hover:bg-[#2C333A] transition-colors -mr-1"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-container-high transition-colors -mr-1"
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <Icon name="close" size={20} />
           </button>
         </div>
 
         {error && (
           <div className="p-3 rounded-lg bg-red-950/50 border border-red-800 text-red-200 text-xs flex items-center gap-2">
-            <span className="material-symbols-outlined text-red-400 text-[18px]">error</span>
+            <Icon name="error" size={18} className="text-red-400" />
             <span>{error}</span>
           </div>
         )}
 
         {successMsg && (
           <div className="p-3 rounded-lg bg-emerald-950/50 border border-emerald-800 text-emerald-200 text-xs flex items-center gap-2">
-            <span className="material-symbols-outlined text-emerald-400 text-[18px]">
-              check_circle
-            </span>
+            <Icon name="check_circle" size={18} className="text-emerald-400" />
             <span>{successMsg}</span>
           </div>
         )}
@@ -135,25 +134,23 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         {/* Invite by Email Row (Owner only) */}
         {isCallerOwner ? (
           <form onSubmit={handleInvite} className="flex flex-col gap-2">
-            <label className="text-[11px] uppercase tracking-wider text-[#8C9BAB] font-semibold">
+            <label className="text-[11px] uppercase tracking-wider text-text-muted font-semibold">
               Invite by Email
             </label>
             <div className="flex items-center gap-2">
-              <div className="relative flex-1 flex items-center bg-[#1D2125] rounded-xl px-3 py-1.5 border border-[#38414A] focus-within:border-[#579DFF] transition-all">
-                <span className="material-symbols-outlined text-[#8C9BAB] text-[18px] mr-2">
-                  mail
-                </span>
+              <div className="relative flex-1 flex items-center bg-canvas rounded-xl px-3 py-1.5 border border-border focus-within:border-primary transition-all">
+                <Icon name="mail" size={18} className="text-text-muted mr-2" />
                 <input
                   type="email"
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
                   placeholder="Enter email address..."
-                  className="bg-transparent w-full text-white placeholder-[#8C9BAB] focus:outline-none text-xs"
+                  className="bg-transparent w-full text-text-primary placeholder:text-text-muted focus:outline-none text-xs"
                 />
                 <select
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value as Role)}
-                  className="bg-[#2C333A] text-white text-[11px] font-semibold py-1 px-2 rounded-lg border border-[#38414A] focus:outline-none shrink-0 ml-2"
+                  className="bg-surface-container-high text-text-primary text-[11px] font-semibold py-1 px-2 rounded-lg border border-border focus:outline-none shrink-0 ml-2"
                 >
                   <option value="member">Member</option>
                   <option value="viewer">Viewer</option>
@@ -164,30 +161,30 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               <button
                 type="submit"
                 disabled={isLoading || !emailInput.trim()}
-                className="h-9 px-4 rounded-xl bg-[#579DFF] hover:bg-[#85B8FF] text-[#1D2125] text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 shrink-0 disabled:opacity-50"
+                className="h-9 px-4 rounded-xl bg-primary hover:bg-primary-hover text-canvas text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 shrink-0 disabled:opacity-60"
               >
-                <span className="material-symbols-outlined text-[16px]">send</span>
+                <Icon name="send" size={16} />
                 <span>Invite</span>
               </button>
             </div>
           </form>
         ) : (
-          <div className="p-3 rounded-xl bg-[#1D2125] border border-[#38414A] text-xs text-[#8C9BAB]">
+          <div className="p-3 rounded-xl bg-surface-container border border-border text-xs text-text-muted">
             Only the board owner can invite new members.
           </div>
         )}
 
         {/* Copy Link Row */}
-        <div className="flex items-center justify-between p-3 rounded-xl bg-[#1D2125] border border-[#38414A]">
+        <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container border border-border">
           <div className="flex items-center gap-3 min-w-0 pr-3">
-            <div className="w-8 h-8 rounded-lg bg-[#2C333A] text-[#579DFF] flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-[18px]">link</span>
+            <div className="w-8 h-8 rounded-lg bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+              <Icon name="link" size={18} />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-xs font-semibold text-white truncate">
+              <span className="text-xs font-semibold text-text-primary truncate">
                 Board share link
               </span>
-              <span className="text-[11px] text-[#8C9BAB] truncate">
+              <span className="text-[11px] text-text-muted truncate">
                 {window.location.origin}/boards/{board.id}
               </span>
             </div>
@@ -195,11 +192,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({
           <button
             type="button"
             onClick={handleCopyLink}
-            className="h-8 px-3 rounded-lg bg-[#2C333A] hover:bg-[#333B44] text-white text-xs font-medium border border-[#38414A] transition-colors flex items-center gap-1.5 shrink-0"
+            className="h-8 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container text-text-primary text-xs font-medium border border-border transition-colors flex items-center gap-1.5 shrink-0"
           >
-            <span className="material-symbols-outlined text-[16px] text-[#579DFF]">
-              {isCopied ? 'check' : 'content_copy'}
-            </span>
+            <Icon
+              name={isCopied ? 'check' : 'content_copy'}
+              size={16}
+              className="text-primary"
+            />
             <span>{isCopied ? 'Copied!' : 'Copy link'}</span>
           </button>
         </div>
@@ -208,14 +207,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between pb-1">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-wider text-[#8C9BAB] font-semibold">
+              <span className="text-[11px] uppercase tracking-wider text-text-muted font-semibold">
                 Board Members
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#2C333A] text-[#8C9BAB] text-[10px] font-bold">
+              <span className="w-5 h-5 rounded-full bg-surface-container-high text-text-muted text-[10px] font-bold flex items-center justify-center">
                 {board.members.length}
               </span>
             </div>
-            <span className="text-[11px] text-[#8C9BAB]">
+            <span className="text-[11px] text-text-muted">
               {isCallerOwner ? 'Manage roles & access' : 'View members'}
             </span>
           </div>
@@ -228,24 +227,24 @@ export const ShareModal: React.FC<ShareModalProps> = ({
               return (
                 <div
                   key={mem.id}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#1D2125] border border-[#38414A]/70 group hover:border-[#579DFF]/60 transition-colors"
+                  className="flex items-center justify-between p-2.5 rounded-xl bg-canvas border border-border group hover:border-primary/60 transition-colors"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-full bg-[#38414A] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-surface-container-high text-text-primary text-xs font-bold flex items-center justify-center shrink-0">
                       {mem.user.name.slice(0, 2).toUpperCase()}
                     </div>
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-semibold text-white truncate">
+                        <span className="text-xs font-semibold text-text-primary truncate">
                           {mem.user.name}
                         </span>
                         {isCurrentUser && (
-                          <span className="text-[10px] text-[#579DFF] font-medium">
+                          <span className="text-[10px] text-primary font-medium">
                             (You)
                           </span>
                         )}
                       </div>
-                      <span className="text-[11px] text-[#8C9BAB] truncate">
+                      <span className="text-[11px] text-text-muted truncate">
                         {mem.user.email}
                       </span>
                     </div>
@@ -257,18 +256,16 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                       <select
                         value={mem.role}
                         onChange={(e) => handleRoleChange(mem.userId, e.target.value as Role)}
-                        className="bg-[#2C333A] text-white text-[11px] font-medium py-1 px-2 rounded-lg border border-[#38414A] focus:outline-none"
+                        className="bg-surface-container-high text-text-primary text-[11px] font-medium py-1 px-2 rounded-lg border border-border focus:outline-none"
                       >
                         <option value="owner">Owner</option>
                         <option value="member">Member</option>
                         <option value="viewer">Viewer</option>
                       </select>
                     ) : (
-                      <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#2C333A] text-[#B6C2CF] text-[11px] font-medium border border-[#38414A]">
+                      <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-high text-text-secondary text-[11px] font-medium border border-border">
                         {isSoleOwner && (
-                          <span className="material-symbols-outlined text-[13px] text-[#F5CD47]">
-                            lock
-                          </span>
+                          <Icon name="lock" size={13} className="text-amber-500" />
                         )}
                         <span className="capitalize">{mem.role}</span>
                       </div>
@@ -279,12 +276,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                       <button
                         type="button"
                         onClick={() => handleRemove(mem.userId, mem.user.name)}
-                        className="text-[#8C9BAB] hover:text-red-400 p-1 rounded hover:bg-[#2C333A] transition-colors"
+                        className="text-text-muted hover:text-red-400 p-1 rounded hover:bg-surface-container-high transition-colors"
                         title="Remove member"
                       >
-                        <span className="material-symbols-outlined text-[16px]">
-                          person_remove
-                        </span>
+                        <Icon name="person_remove" size={16} />
                       </button>
                     )}
                   </div>

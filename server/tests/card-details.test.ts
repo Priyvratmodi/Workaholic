@@ -144,6 +144,39 @@ describe('Card Details API Integration Tests', () => {
     expect(unassignRes.status).toBe(200);
   });
 
+  it('POST /api/cards/:id/attachments/upload should upload a file document and delete it', async () => {
+    const fileBuffer = Buffer.from('Workaholic Project Architecture and Roadmap');
+
+    const uploadRes = await request(app)
+      .post(`/api/cards/${cardId}/attachments/upload`)
+      .set('Cookie', ownerCookie)
+      .attach('file', fileBuffer, 'project_spec.pdf');
+
+    expect(uploadRes.status).toBe(201);
+    expect(uploadRes.body.attachment).toBeDefined();
+    expect(uploadRes.body.attachment.name).toBe('project_spec.pdf');
+    expect(uploadRes.body.attachment.url).toMatch(/^\/uploads\//);
+    expect(uploadRes.body.attachment.size).toBe(fileBuffer.length);
+
+    const attachmentId = uploadRes.body.attachment.id;
+
+    // Verify GET /api/cards/:id includes the uploaded document
+    const cardRes = await request(app)
+      .get(`/api/cards/${cardId}`)
+      .set('Cookie', ownerCookie);
+
+    expect(cardRes.status).toBe(200);
+    const uploaded = cardRes.body.card.attachments.find((a: any) => a.id === attachmentId);
+    expect(uploaded).toBeDefined();
+    expect(uploaded.name).toBe('project_spec.pdf');
+
+    // Clean up
+    const delRes = await request(app)
+      .delete(`/api/attachments/${attachmentId}`)
+      .set('Cookie', ownerCookie);
+    expect(delRes.status).toBe(200);
+  });
+
   it('POST and DELETE /api/cards/:id/attachments should add and delete attachment', async () => {
     const res = await request(app)
       .post(`/api/cards/${cardId}/attachments`)

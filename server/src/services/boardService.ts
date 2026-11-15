@@ -9,8 +9,9 @@ export async function createBoardFromTemplate(
   templateId?: string,
   background?: string
 ) {
-  // If templateId is provided or defaulted to project management template
-  const isDefault = !templateId || templateId === PROJECT_MANAGEMENT_TEMPLATE.id;
+  // If templateId is 'blank', create an empty board with no lists
+  const isBlank = templateId === 'blank' || templateId === 'none';
+  const isDefault = !isBlank && (!templateId || templateId === PROJECT_MANAGEMENT_TEMPLATE.id);
   const template: TemplateDefinition = PROJECT_MANAGEMENT_TEMPLATE;
 
   return await prisma.$transaction(async (tx) => {

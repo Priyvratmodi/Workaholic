@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { apiRequest } from '../api/client.js';
 import { UserSummary } from '@workaholic/shared';
+import { useThemeStore } from './themeStore.js';
 
 interface AuthState {
   user: UserSummary | null;
@@ -20,13 +21,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const res = await apiRequest<{ user: UserSummary }>('/api/auth/me');
+      if (res.user) {
+        useThemeStore.getState().syncWithUser(res.user.themePreference, res.user.reduceMotion);
+      }
       set({ user: res.user, isInitialized: true, isLoading: false });
     } catch {
       set({ user: null, isInitialized: true, isLoading: false });
     }
   },
 
-  setUser: (user) => set({ user }),
+  setUser: (user) => {
+    if (user) {
+      useThemeStore.getState().syncWithUser(user.themePreference, user.reduceMotion);
+    }
+    set({ user });
+  },
 
   logout: async () => {
     try {

@@ -8,13 +8,15 @@ generator client {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  name         String
-  email        String        @unique
-  passwordHash String
-  avatarUrl    String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id              String        @id @default(uuid())
+  name            String
+  email           String        @unique
+  passwordHash    String
+  avatarUrl       String?
+  themePreference String        @default("SYSTEM") // 'LIGHT' | 'DARK' | 'SYSTEM'
+  reduceMotion    Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   boardMembers BoardMember[]
   boardStars   BoardStar[]
@@ -71,6 +73,7 @@ model List {
   boardId    String
   title      String
   emoji      String?
+  color      String?
   position   String   // Fractional index
   isArchived Boolean  @default(false)
   createdAt  DateTime @default(now())

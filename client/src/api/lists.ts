@@ -3,7 +3,7 @@ import { ListInfo } from '@workaholic/shared';
 
 export async function createList(
   boardId: string,
-  data: { title: string; emoji?: string | null }
+  data: { title: string; emoji?: string | null; color?: string | null }
 ): Promise<ListInfo> {
   const res = await apiRequest<{ list: ListInfo }>(`/api/boards/${boardId}/lists`, {
     method: 'POST',
@@ -17,6 +17,7 @@ export async function updateList(
   data: {
     title?: string;
     emoji?: string | null;
+    color?: string | null;
     position?: string;
     isArchived?: boolean;
   }

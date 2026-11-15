@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PASTEL_BACKGROUND_KEYS, mapLegacyBackgroundToPastel } from './boardBackgrounds.js';
 
 export const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -14,25 +15,28 @@ export const loginSchema = z.object({
 export const createBoardSchema = z.object({
   title: z.string().min(1, 'Board title is required').max(100),
   templateId: z.string().optional(),
-  background: z.string().optional(),
+  background: z.string().optional().transform((val) => (val ? mapLegacyBackgroundToPastel(val) : 'sky')),
 });
 
 export const updateBoardSchema = z.object({
   title: z.string().min(1).max(100).optional(),
-  background: z.string().optional(),
+  background: z.string().optional().transform((val) => (val ? mapLegacyBackgroundToPastel(val) : undefined)),
 });
 
 export const createListSchema = z.object({
   title: z.string().min(1, 'List title is required').max(100),
   emoji: z.string().max(8).optional().nullable(),
+  color: z.string().optional().nullable(),
 });
 
 export const updateListSchema = z.object({
   title: z.string().min(1).max(100).optional(),
   emoji: z.string().max(8).optional().nullable(),
+  color: z.string().optional().nullable(),
   position: z.string().optional(),
   isArchived: z.boolean().optional(),
 });
+
 
 export const createCardSchema = z.object({
   title: z.string().min(1, 'Card title is required').max(300),
@@ -100,3 +104,18 @@ export const createAttachmentSchema = z.object({
   size: z.number().optional().nullable(),
   mimeType: z.string().optional().nullable(),
 });
+
+export const updatePreferencesSchema = z.object({
+  themePreference: z.enum(['LIGHT', 'DARK', 'SYSTEM']).optional(),
+  reduceMotion: z.boolean().optional(),
+});
+
+export type UpdatePreferencesInput = z.infer<typeof updatePreferencesSchema>;
+
+export const updateProfileSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100).optional(),
+  avatarUrl: z.string().url('Invalid avatar URL').optional().nullable(),
+});
+
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+

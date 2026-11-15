@@ -20,7 +20,9 @@ import {
   assignLabel,
   unassignLabel,
   addAttachment,
+  uploadAttachment,
 } from '../controllers/cardDetailController.js';
+import { upload } from '../utils/upload.js';
 
 const router = Router();
 
@@ -78,6 +80,14 @@ router.post(
   requireBoardPermission('edit'),
   validate(createAttachmentSchema),
   addAttachment
+);
+
+router.post(
+  '/:cardId/attachments/upload',
+  requireAuth,
+  requireBoardPermission('edit'),
+  upload.single('file'),
+  uploadAttachment
 );
 
 export default router;

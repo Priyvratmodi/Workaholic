@@ -1,32 +1,375 @@
+/* Workaholic Design Tokens - Derived from Stitch Designs (Default Light Mode) */
+
 :root {
-  /* Dark Theme Palette (Default) */
-  --bg-canvas: #1D2125;
-  --bg-surface: #101418;
-  --bg-column: #22272B;
-  --bg-card: #2C333A;
-  --bg-card-hover: #333B44;
-  --bg-card-drag: #313539;
-  
-  --border-default: #38414A;
-  --border-subtle: #262A2E;
-  --border-focus: #579DFF;
-
-  --text-primary: #FFFFFF;
-  --text-secondary: #B6C2CF;
-  --text-muted: #8C9BAB;
-
-  --accent-primary: #579DFF;
-  --accent-primary-hover: #85B8FF;
-  --accent-success: #4BCE97;
-  --accent-warning: #F5CD47;
-  --accent-danger: #F87168;
-  --accent-purple: #9F8FEF;
-
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
-
   --list-width: 272px;
+
+  color-scheme: light;
+
+  /* Semantic Core Tokens - Default Light Mode */
+  --color-bg-page: #f4f6fa;
+  --color-surface-sidebar: #f2f3ff;
+  --color-surface-panel: #ebedf5;
+  --color-surface-list: #ebedf5;
+  --color-surface-card: #ffffff;
+  --color-surface-card-hover: #f8faff;
+  --color-border: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-body: #334155;
+  --color-text-muted: #475569;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-gradient: #FFFFFF;
+  --color-accent: #4f46e5;
+  --color-accent-subtle: rgba(79, 70, 229, 0.12);
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-success: #16a34a;
+
+  /* Surface & Background Aliases */
+  --bg-canvas: #f4f6fa;
+  --bg-surface: #faf8ff;
+  --bg-surface-dim: #d2d9f4;
+  --bg-surface-bright: #ffffff;
+  --bg-surface-container: #ebedf5;
+  --bg-surface-container-low: #f4f6fa;
+  --bg-surface-container-high: #e8ecf8;
+  --bg-surface-container-highest: #e2e8f0;
+  --bg-surface-container-lowest: #ffffff;
+
+  --bg-column: #ebedf5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8faff;
+  --bg-card-drag: #e8ecf8;
+  --bg-menu: #ffffff;
+  --bg-menu-hover: #f1f5f9;
+
+  /* Border Tokens */
+  --border-default: #e2e8f0;
+  --border-subtle: #edf2f7;
+  --border-focus: #4f46e5;
+  --border-outline: #64748b;
+  --border-outline-variant: #cbd5e1;
+
+  /* Typography Tokens */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-on-surface: #0f172a;
+  --text-on-surface-variant: #475569;
+
+  /* Accent Tokens */
+  --accent-primary: #4f46e5;
+  --accent-primary-hover: #4338ca;
+  --accent-primary-container: #4f46e5;
+  --accent-on-primary: #ffffff;
+  --accent-on-primary-container: #ffffff;
+
+  --accent-secondary: #006c49;
+  --accent-secondary-container: #e0f2fe;
+  --accent-on-secondary: #ffffff;
+  --accent-on-secondary-container: #0369a1;
+
+  --accent-success: #16a34a;
+  --accent-success-container: #fef3c7;
+  --accent-on-success: #ffffff;
+
+  --accent-warning: #d97706;
+  --accent-warning-container: #ffddb8;
+  --color-rating-star: #FFB95F;
+
+  --accent-danger: #dc2626;
+  --accent-error: #dc2626;
+  --accent-error-container: #fee2e2;
+  --accent-on-error: #ffffff;
+
+  --accent-purple: #7c3aed;
+  --color-brand-purple: #4241BC;
+
+  /* Preview Thumbnail Tokens */
+  --preview-light-bg: #ECEFF3;
+  --preview-light-border: #D5DCE4;
+  --preview-light-card: #F8FAFC;
+  --preview-light-card-item: #E2E8F0;
+  --preview-light-text-subtle: #94A3B8;
+  --preview-light-text-muted: #64748B;
+  --preview-light-primary: #4F46E5;
+  --preview-light-avatar: #CBD5E1;
+
+  --preview-dark-bg: #101418;
+  --preview-dark-border: #38414A;
+  --preview-dark-card: #1C2024;
+  --preview-dark-card-item: #262A2E;
+  --preview-dark-text-subtle: #414752;
+  --preview-dark-primary: #579DFF;
+  --preview-dark-accent1: #CABEFF;
+  --preview-dark-accent2: #5CDDA5;
+
+  /* Elevation Shadows */
+  --shadow-menu: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-card-hover: 0 8px 16px -4px rgba(15, 23, 42, 0.12);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* Semantic Core Tokens */
+  --color-bg-page: #f4f6fa;
+  --color-surface-sidebar: #f2f3ff;
+  --color-surface-panel: #ebedf5;
+  --color-surface-list: #ebedf5;
+  --color-surface-card: #ffffff;
+  --color-surface-card-hover: #f8faff;
+  --color-border: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-body: #334155;
+  --color-text-muted: #475569;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-gradient: #FFFFFF;
+  --color-accent: #4f46e5;
+  --color-accent-subtle: rgba(79, 70, 229, 0.12);
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-success: #16a34a;
+
+  /* Surface & Background Aliases */
+  --bg-canvas: #f4f6fa;
+  --bg-surface: #faf8ff;
+  --bg-surface-dim: #d2d9f4;
+  --bg-surface-bright: #ffffff;
+  --bg-surface-container: #ebedf5;
+  --bg-surface-container-low: #f4f6fa;
+  --bg-surface-container-high: #e8ecf8;
+  --bg-surface-container-highest: #e2e8f0;
+  --bg-surface-container-lowest: #ffffff;
+
+  --bg-column: #ebedf5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8faff;
+  --bg-card-drag: #e8ecf8;
+  --bg-menu: #ffffff;
+  --bg-menu-hover: #f1f5f9;
+
+  /* Border Tokens */
+  --border-default: #e2e8f0;
+  --border-subtle: #edf2f7;
+  --border-focus: #4f46e5;
+  --border-outline: #64748b;
+  --border-outline-variant: #cbd5e1;
+
+  /* Typography Tokens */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-on-surface: #0f172a;
+  --text-on-surface-variant: #475569;
+
+  /* Accent Tokens */
+  --accent-primary: #4f46e5;
+  --accent-primary-hover: #4338ca;
+  --accent-primary-container: #4f46e5;
+  --accent-on-primary: #ffffff;
+  --accent-on-primary-container: #ffffff;
+
+  --accent-secondary: #006c49;
+  --accent-secondary-container: #e0f2fe;
+  --accent-on-secondary: #ffffff;
+  --accent-on-secondary-container: #0369a1;
+
+  --accent-success: #16a34a;
+  --accent-success-container: #fef3c7;
+  --accent-on-success: #ffffff;
+
+  --accent-warning: #d97706;
+  --accent-warning-container: #ffddb8;
+  --color-rating-star: #FFB95F;
+
+  --accent-danger: #dc2626;
+  --accent-error: #dc2626;
+  --accent-error-container: #fee2e2;
+  --accent-on-error: #ffffff;
+
+  --accent-purple: #7c3aed;
+  --color-brand-purple: #4241BC;
+
+  /* Preview Thumbnail Tokens */
+  --preview-light-bg: #ECEFF3;
+  --preview-light-border: #D5DCE4;
+  --preview-light-card: #F8FAFC;
+  --preview-light-card-item: #E2E8F0;
+  --preview-light-text-subtle: #94A3B8;
+  --preview-light-text-muted: #64748B;
+  --preview-light-primary: #4F46E5;
+  --preview-light-avatar: #CBD5E1;
+
+  --preview-dark-bg: #101418;
+  --preview-dark-border: #38414A;
+  --preview-dark-card: #1C2024;
+  --preview-dark-card-item: #262A2E;
+  --preview-dark-text-subtle: #414752;
+  --preview-dark-primary: #579DFF;
+  --preview-dark-accent1: #CABEFF;
+  --preview-dark-accent2: #5CDDA5;
+
+  /* Elevation Shadows */
+  --shadow-menu: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-card-hover: 0 8px 16px -4px rgba(15, 23, 42, 0.12);
+}
+
+/* Fallback for any legacy dark selector to resolve to light mode */
+:root[data-theme="dark"] {
+  color-scheme: light;
+
+  /* Semantic Core Tokens */
+  --color-bg-page: #f4f6fa;
+  --color-surface-sidebar: #f2f3ff;
+  --color-surface-panel: #ebedf5;
+  --color-surface-list: #ebedf5;
+  --color-surface-card: #ffffff;
+  --color-surface-card-hover: #f8faff;
+  --color-border: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-body: #334155;
+  --color-text-muted: #475569;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-gradient: #FFFFFF;
+  --color-accent: #4f46e5;
+  --color-accent-subtle: rgba(79, 70, 229, 0.12);
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-success: #16a34a;
+
+  /* Surface & Background Aliases */
+  --bg-canvas: #f4f6fa;
+  --bg-surface: #faf8ff;
+  --bg-surface-dim: #d2d9f4;
+  --bg-surface-bright: #ffffff;
+  --bg-surface-container: #ebedf5;
+  --bg-surface-container-low: #f4f6fa;
+  --bg-surface-container-high: #e8ecf8;
+  --bg-surface-container-highest: #e2e8f0;
+  --bg-surface-container-lowest: #ffffff;
+
+  --bg-column: #ebedf5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8faff;
+  --bg-card-drag: #e8ecf8;
+  --bg-menu: #ffffff;
+  --bg-menu-hover: #f1f5f9;
+
+  /* Border Tokens */
+  --border-default: #e2e8f0;
+  --border-subtle: #edf2f7;
+  --border-focus: #4f46e5;
+  --border-outline: #64748b;
+  --border-outline-variant: #cbd5e1;
+
+  /* Typography Tokens */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-on-surface: #0f172a;
+  --text-on-surface-variant: #475569;
+
+  /* Accent Tokens */
+  --accent-primary: #4f46e5;
+  --accent-primary-hover: #4338ca;
+  --accent-primary-container: #4f46e5;
+  --accent-on-primary: #ffffff;
+  --accent-on-primary-container: #ffffff;
+
+  --accent-secondary: #006c49;
+  --accent-secondary-container: #e0f2fe;
+  --accent-on-secondary: #ffffff;
+  --accent-on-secondary-container: #0369a1;
+
+  --accent-success: #16a34a;
+  --accent-success-container: #fef3c7;
+  --accent-on-success: #ffffff;
+
+  --accent-warning: #d97706;
+  --accent-warning-container: #ffddb8;
+  --color-rating-star: #FFB95F;
+
+  --accent-danger: #dc2626;
+  --accent-error: #dc2626;
+  --accent-error-container: #fee2e2;
+  --accent-on-error: #ffffff;
+
+  --accent-purple: #7c3aed;
+  --color-brand-purple: #4241BC;
+
+  /* Preview Thumbnail Tokens */
+  --preview-light-bg: #ECEFF3;
+  --preview-light-border: #D5DCE4;
+  --preview-light-card: #F8FAFC;
+  --preview-light-card-item: #E2E8F0;
+  --preview-light-text-subtle: #94A3B8;
+  --preview-light-text-muted: #64748B;
+  --preview-light-primary: #4F46E5;
+  --preview-light-avatar: #CBD5E1;
+
+  --preview-dark-bg: #101418;
+  --preview-dark-border: #38414A;
+  --preview-dark-card: #1C2024;
+  --preview-dark-card-item: #262A2E;
+  --preview-dark-text-subtle: #414752;
+  --preview-dark-primary: #579DFF;
+  --preview-dark-accent1: #CABEFF;
+  --preview-dark-accent2: #5CDDA5;
+
+  /* Elevation Shadows */
+  --shadow-menu: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-card-hover: 0 8px 16px -4px rgba(15, 23, 42, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html *,
+  html *::before,
+  html *::after {
+    transition: none !important;
+  }
+}
+
+html.reduce-motion,
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  transition: none !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+}
+
+/* Global reduce-motion turns off card drag rotation and long animations */
+html.reduce-motion [data-draggable-card],
+html.reduce-motion .card-dragging {
+  transform: none !important;
+}
+
+/* Pastel Board Background Gradients (135deg) */
+.bg-pastel-sky { background: linear-gradient(135deg, #BFDBFE 0%, #E0F2FE 100%); background-color: #BFDBFE !important; }
+.bg-pastel-mint { background: linear-gradient(135deg, #BBF7D0 0%, #D1FAE5 100%); background-color: #BBF7D0 !important; }
+.bg-pastel-lavender { background: linear-gradient(135deg, #DDD6FE 0%, #EDE9FE 100%); background-color: #DDD6FE !important; }
+.bg-pastel-peach { background: linear-gradient(135deg, #FED7AA 0%, #FFEDD5 100%); background-color: #FED7AA !important; }
+.bg-pastel-rose { background: linear-gradient(135deg, #FBCFE8 0%, #FCE7F3 100%); background-color: #FBCFE8 !important; }
+.bg-pastel-lemon { background: linear-gradient(135deg, #FEF08A 0%, #FEF9C3 100%); background-color: #FEF08A !important; }
+.bg-pastel-aqua { background: linear-gradient(135deg, #A5F3FC 0%, #CFFAFE 100%); background-color: #A5F3FC !important; }
+.bg-pastel-coral { background: linear-gradient(135deg, #FECACA 0%, #FEE2E2 100%); background-color: #FECACA !important; }
+.bg-pastel-lilac { background: linear-gradient(135deg, #E9D5FF 0%, #FAE8FF 100%); background-color: #E9D5FF !important; }
+.bg-pastel-sage { background: linear-gradient(135deg, #D9F99D 0%, #ECFCCB 100%); background-color: #D9F99D !important; }
+
+/* Auth brand showcase gradient */
+.bg-auth-brand-gradient {
+  background: linear-gradient(135deg, #4241bc 0%, #5b5bd6 50%, #6366f1 100%);
+  background-color: #4241bc !important;
+}
+.board-tile-gradient {
+  opacity: 1;
 }

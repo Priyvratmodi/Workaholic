@@ -68,13 +68,13 @@ describe('Board & Template API Integration Tests', () => {
       .set('Cookie', ownerCookie)
       .send({
         title: 'Q4 Product Roadmap',
-        background: 'gradient-3',
+        background: 'lavender',
       });
 
     expect(res.status).toBe(201);
     expect(res.body.board).toBeDefined();
     expect(res.body.board.title).toBe('Q4 Product Roadmap');
-    expect(res.body.board.background).toBe('gradient-3');
+    expect(res.body.board.background).toBe('lavender');
 
     createdBoardId = res.body.board.id;
 
@@ -101,6 +101,31 @@ describe('Board & Template API Integration Tests', () => {
     expect(lists[0].cards[0].description).toBe(
       PROJECT_MANAGEMENT_TEMPLATE.lists[0].starterCard.description
     );
+  });
+
+  it('POST /api/boards with templateId="blank" should create a blank board with 0 lists', async () => {
+    const res = await request(app)
+      .post('/api/boards')
+      .set('Cookie', ownerCookie)
+      .send({
+        title: 'Empty Blank Board',
+        templateId: 'blank',
+        background: 'sky',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.board).toBeDefined();
+    const blankBoardId = res.body.board.id;
+
+    // Verify in DB that NO lists were created
+    const lists = await prisma.list.findMany({
+      where: { boardId: blankBoardId },
+    });
+
+    expect(lists.length).toBe(0);
+
+    // Clean up
+    await prisma.board.delete({ where: { id: blankBoardId } });
   });
 
   it('GET /api/boards should list user boards with role and summary stats', async () => {
@@ -169,12 +194,12 @@ describe('Board & Template API Integration Tests', () => {
       .set('Cookie', ownerCookie)
       .send({
         title: 'Q4 Product Roadmap - Updated',
-        background: 'gradient-5',
+        background: 'peach',
       });
 
     expect(res.status).toBe(200);
     expect(res.body.board.title).toBe('Q4 Product Roadmap - Updated');
-    expect(res.body.board.background).toBe('gradient-5');
+    expect(res.body.board.background).toBe('peach');
   });
 
   it('GET /api/boards/:id/activity should return activity log', async () => {
@@ -186,4 +211,41 @@ describe('Board & Template API Integration Tests', () => {
     expect(res.body.activities).toBeDefined();
     expect(res.body.activities.length).toBeGreaterThan(0);
   });
+
+  it('GET and POST /api/boards/:id/ai-summary should return structured AI board summary', async () => {
+    // 1. Unauthenticated request should fail with 401
+    const unauthRes = await request(app).get(`/api/boards/${createdBoardId}/ai-summary`);
+    expect(unauthRes.status).toBe(401);
+
+    // 2. Stranger request should fail with 404 (not a board member)
+    const strangerRes = await request(app)
+      .get(`/api/boards/${createdBoardId}/ai-summary`)
+      .set('Cookie', strangerCookie);
+    expect(strangerRes.status).toBe(404);
+
+    // 3. Member request (GET) should succeed with structured summary
+    const getRes = await request(app)
+      .get(`/api/boards/${createdBoardId}/ai-summary`)
+      .set('Cookie', ownerCookie);
+
+    expect(getRes.status).toBe(200);
+    expect(getRes.body.summary).toBeDefined();
+    expect(typeof getRes.body.summary.overviewNarrative).toBe('string');
+    expect(typeof getRes.body.summary.doneCount).toBe('number');
+    expect(typeof getRes.body.summary.blockerCount).toBe('number');
+    expect(typeof getRes.body.summary.overdueCount).toBe('number');
+    expect(typeof getRes.body.summary.totalCards).toBe('number');
+    expect(Array.isArray(getRes.body.summary.attentionItems)).toBe(true);
+    expect(Array.isArray(getRes.body.summary.listBreakdowns)).toBe(true);
+    expect(getRes.body.summary.listBreakdowns.length).toBeGreaterThan(0);
+
+    // 4. Member request (POST) for refresh should also succeed
+    const postRes = await request(app)
+      .post(`/api/boards/${createdBoardId}/ai-summary`)
+      .set('Cookie', ownerCookie);
+
+    expect(postRes.status).toBe(200);
+    expect(postRes.body.summary).toBeDefined();
+    expect(postRes.body.summary.totalCards).toBe(getRes.body.summary.totalCards);
+  }, 30000);
 });

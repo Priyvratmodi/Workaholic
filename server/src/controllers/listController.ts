@@ -9,7 +9,7 @@ export async function createList(req: Request, res: Response) {
   }
 
   const boardId = req.params.boardId;
-  const { title, emoji } = req.body;
+  const { title, emoji, color } = req.body;
 
   // Find the list with highest position
   const lastList = await prisma.list.findFirst({
@@ -25,6 +25,7 @@ export async function createList(req: Request, res: Response) {
       boardId,
       title: title.trim(),
       emoji: emoji || null,
+      color: color || null,
       position,
     },
     include: {
@@ -59,11 +60,12 @@ export async function updateList(req: Request, res: Response) {
   }
 
   const listId = req.params.id;
-  const { title, emoji, position, isArchived } = req.body;
+  const { title, emoji, color, position, isArchived } = req.body;
 
   const data: Record<string, any> = {};
   if (title !== undefined) data.title = title.trim();
   if (emoji !== undefined) data.emoji = emoji;
+  if (color !== undefined) data.color = color;
   if (position !== undefined) data.position = position;
   if (isArchived !== undefined) data.isArchived = isArchived;
 

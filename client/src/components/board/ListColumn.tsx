@@ -3,6 +3,8 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { ListInfo } from '@workaholic/shared';
 import { CardItem } from './CardItem.js';
+import { Icon } from '../ui/Icon.js';
+import { LIST_COLOR_PRESETS, getListColorPreset } from '../../utils/colors.js';
 
 interface ListColumnProps {
   list: ListInfo;
@@ -11,6 +13,7 @@ interface ListColumnProps {
   onToggleComplete?: (cardId: string, current: boolean) => Promise<any> | void;
   onAddCard?: (listId: string, title: string) => Promise<any>;
   onUpdateListTitle?: (listId: string, newTitle: string) => Promise<any>;
+  onUpdateListColor?: (listId: string, color: string | null) => Promise<any>;
   onDeleteList?: (listId: string) => Promise<any>;
 }
 
@@ -21,6 +24,7 @@ export const ListColumn: React.FC<ListColumnProps> = ({
   onToggleComplete,
   onAddCard,
   onUpdateListTitle,
+  onUpdateListColor,
   onDeleteList,
 }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -31,6 +35,21 @@ export const ListColumn: React.FC<ListColumnProps> = ({
 
   const cardInputRef = useRef<HTMLTextAreaElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu on outside click
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [isMenuOpen]);
+
+  const colorPreset = getListColorPreset(list.color);
 
   // Droppable zone for list container (handles empty list drops)
   const { setNodeRef, isOver } = useDroppable({
@@ -78,12 +97,19 @@ export const ListColumn: React.FC<ListColumnProps> = ({
 
   return (
     <div
-      className={`w-[272px] shrink-0 bg-[#22272B] rounded-2xl p-2.5 flex flex-col gap-2.5 shadow-md border max-h-[calc(100vh-140px)] transition-colors ${
-        isOver ? 'border-[#579DFF] bg-[#22272B]/90' : 'border-[#38414A]/80'
+      className={`w-[272px] shrink-0 rounded-2xl p-2.5 flex flex-col gap-2.5 shadow-md border max-h-[calc(100vh-140px)] transition-all ${
+        colorPreset.bgClass
+      } ${
+        isOver ? 'border-primary ring-2 ring-primary/20' : colorPreset.borderClass
       }`}
     >
+      {/* Top Accent Strip when custom color is applied */}
+      {colorPreset.color && (
+        <div className={`h-1.5 w-full rounded-full ${colorPreset.accentBarClass} -mt-0.5 mb-0.5`} />
+      )}
+
       {/* Column Header */}
-      <div className="flex items-center justify-between px-1.5 pt-1 relative">
+      <div className={`flex items-center justify-between px-1.5 pt-1 relative ${colorPreset.headerClass}`}>
         <div className="flex items-center gap-1.5 min-w-0 flex-1">
           {list.emoji && (
             <span className="text-base select-none shrink-0">{list.emoji}</span>
@@ -103,13 +129,13 @@ export const ListColumn: React.FC<ListColumnProps> = ({
                   setIsEditingTitle(false);
                 }
               }}
-              className="bg-[#1D2125] text-white text-xs font-semibold px-1.5 py-0.5 rounded border border-[#579DFF] w-full focus:outline-none"
+              className="bg-canvas text-text-primary text-xs font-semibold px-1.5 py-0.5 rounded border border-primary w-full focus:outline-none"
             />
           ) : (
             <h3
               onClick={() => !isReadOnly && setIsEditingTitle(true)}
-              className={`text-xs font-semibold text-white tracking-tight truncate ${
-                !isReadOnly ? 'cursor-pointer hover:text-[#579DFF]' : ''
+              className={`text-xs font-semibold text-text-primary tracking-tight truncate ${
+                !isReadOnly ? 'cursor-pointer hover:text-primary' : ''
               }`}
               title={list.title}
             >
@@ -117,7 +143,7 @@ export const ListColumn: React.FC<ListColumnProps> = ({
             </h3>
           )}
 
-          <span className="px-1.5 py-0.2 rounded-full bg-[#2C333A] text-[#8C9BAB] text-[10px] font-bold shrink-0">
+          <span className="px-1.5 py-0.2 rounded-full bg-surface-container-high text-text-muted text-[10px] font-bold shrink-0">
             {list.cards.length}
           </span>
         </div>
@@ -128,24 +154,25 @@ export const ListColumn: React.FC<ListColumnProps> = ({
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="w-6 h-6 rounded flex items-center justify-center text-[#8C9BAB] hover:text-white hover:bg-[#2C333A] transition-colors"
+              className="w-6 h-6 rounded flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-surface-container-high transition-colors"
             >
-              <span className="material-symbols-outlined text-[16px]">
-                more_horiz
-              </span>
+              <Icon name="more_horiz" size={16} />
             </button>
 
             {isMenuOpen && (
-              <div className="absolute right-0 mt-1 w-40 rounded-xl bg-[#22272B] border border-[#38414A] shadow-xl py-1 z-30 animate-in fade-in duration-100">
+              <div
+                ref={menuRef}
+                className="absolute right-0 mt-1 w-48 rounded-xl bg-menu border border-border shadow-xl py-1.5 z-30 animate-in fade-in duration-100"
+              >
                 <button
                   type="button"
                   onClick={() => {
                     setIsMenuOpen(false);
                     setIsEditingTitle(true);
                   }}
-                  className="w-full text-left px-3 py-1.5 text-xs text-[#B6C2CF] hover:bg-[#2C333A] hover:text-white flex items-center gap-2"
+                  className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-container-high hover:text-text-primary flex items-center gap-2"
                 >
-                  <span className="material-symbols-outlined text-[14px]">edit</span>
+                  <Icon name="edit" size={14} />
                   <span>Rename list</span>
                 </button>
                 <button
@@ -154,12 +181,44 @@ export const ListColumn: React.FC<ListColumnProps> = ({
                     setIsMenuOpen(false);
                     setIsAddingCard(true);
                   }}
-                  className="w-full text-left px-3 py-1.5 text-xs text-[#B6C2CF] hover:bg-[#2C333A] hover:text-white flex items-center gap-2"
+                  className="w-full text-left px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-container-high hover:text-text-primary flex items-center gap-2"
                 >
-                  <span className="material-symbols-outlined text-[14px]">add</span>
+                  <Icon name="add" size={14} />
                   <span>Add card</span>
                 </button>
-                <div className="h-px bg-[#38414A] my-1"></div>
+
+                <div className="h-px bg-border my-1"></div>
+
+                <div className="px-3 py-1 text-[10px] font-bold text-text-muted uppercase tracking-wider">
+                  List Color
+                </div>
+                <div className="grid grid-cols-4 gap-1.5 px-3 py-1 pb-1.5">
+                  {LIST_COLOR_PRESETS.map((preset) => {
+                    const isSelected = (list.color || null) === preset.color;
+                    return (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        title={preset.name}
+                        onClick={async () => {
+                          setIsMenuOpen(false);
+                          await onUpdateListColor?.(list.id, preset.color);
+                        }}
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-transform hover:scale-110 shadow-xs border ${
+                          isSelected ? 'ring-2 ring-primary ring-offset-1 border-primary' : 'border-border/60'
+                        }`}
+                        style={{ backgroundColor: preset.dotColor }}
+                      >
+                        {isSelected && (
+                          <Icon name="check" size={14} className="text-white font-bold" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="h-px bg-border my-1"></div>
+
                 <button
                   type="button"
                   onClick={() => {
@@ -172,9 +231,9 @@ export const ListColumn: React.FC<ListColumnProps> = ({
                       onDeleteList?.(list.id);
                     }
                   }}
-                  className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-[#2C333A] flex items-center gap-2"
+                  className="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 flex items-center gap-2"
                 >
-                  <span className="material-symbols-outlined text-[14px]">delete</span>
+                  <Icon name="delete" size={14} className="text-red-500" />
                   <span>Delete list</span>
                 </button>
               </div>
@@ -201,8 +260,8 @@ export const ListColumn: React.FC<ListColumnProps> = ({
         </SortableContext>
 
         {list.cards.length === 0 && (
-          <div className="min-h-[70px] rounded-xl border border-dashed border-[#38414A]/70 flex items-center justify-center text-center p-3">
-            <span className="text-[11px] text-[#8C9BAB]">No tasks here yet</span>
+          <div className="min-h-[70px] rounded-xl border border-dashed border-border flex items-center justify-center text-center p-3">
+            <span className="text-[11px] text-text-muted">No tasks here yet</span>
           </div>
         )}
       </div>
@@ -228,12 +287,12 @@ export const ListColumn: React.FC<ListColumnProps> = ({
                 }}
                 placeholder="Enter a title for this card..."
                 rows={2}
-                className="w-full px-2.5 py-2 rounded-xl bg-[#1D2125] text-white placeholder-[#8C9BAB] text-xs border border-[#38414A] focus:border-[#579DFF] focus:outline-none resize-none shadow-inner"
+                className="w-full px-2.5 py-2 rounded-xl bg-canvas text-text-primary placeholder:text-text-muted text-xs border border-border focus:border-primary focus:outline-none resize-none shadow-inner"
               />
               <div className="flex items-center gap-2">
                 <button
                   type="submit"
-                  className="px-3 py-1.5 rounded-lg bg-[#579DFF] hover:bg-[#85B8FF] text-[#1D2125] text-xs font-semibold transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-hover text-canvas text-xs font-semibold transition-colors"
                 >
                   Add card
                 </button>
@@ -243,9 +302,9 @@ export const ListColumn: React.FC<ListColumnProps> = ({
                     setIsAddingCard(false);
                     setCardTitleInput('');
                   }}
-                  className="w-7 h-7 rounded-lg text-[#8C9BAB] hover:text-white hover:bg-[#2C333A] flex items-center justify-center transition-colors"
+                  className="w-7 h-7 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container-high flex items-center justify-center transition-colors"
                 >
-                  <span className="material-symbols-outlined text-[18px]">close</span>
+                  <Icon name="close" size={18} />
                 </button>
               </div>
             </form>
@@ -253,9 +312,9 @@ export const ListColumn: React.FC<ListColumnProps> = ({
             <button
               type="button"
               onClick={() => setIsAddingCard(true)}
-              className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-[#B6C2CF] hover:text-white hover:bg-[#2C333A] transition-colors text-xs font-medium text-left"
+              className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-text-secondary hover:text-text-primary hover:bg-surface-container-high transition-colors text-xs font-medium text-left"
             >
-              <span className="material-symbols-outlined text-[16px]">add</span>
+              <Icon name="add" size={16} />
               <span>Add a card</span>
             </button>
           )}

@@ -8,6 +8,8 @@ export interface AuthenticatedUser {
   name: string;
   email: string;
   avatarUrl: string | null;
+  themePreference: string;
+  reduceMotion: boolean;
 }
 
 declare global {
@@ -42,6 +44,8 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
         name: true,
         email: true,
         avatarUrl: true,
+        themePreference: true,
+        reduceMotion: true,
       },
     });
 

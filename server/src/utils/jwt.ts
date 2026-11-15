@@ -22,20 +22,28 @@ export function verifyToken(token: string): TokenPayload | null {
 }
 
 export function setAuthCookie(res: Response, token: string) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = (process.env.COOKIE_SAME_SITE as 'lax' | 'none' | 'strict') || (isProduction ? 'none' : 'lax');
+  const secure = isProduction ? true : sameSite === 'none';
+
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure,
+    sameSite,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     path: '/',
   });
 }
 
 export function clearAuthCookie(res: Response) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const sameSite = (process.env.COOKIE_SAME_SITE as 'lax' | 'none' | 'strict') || (isProduction ? 'none' : 'lax');
+  const secure = isProduction ? true : sameSite === 'none';
+
   res.clearCookie(COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure,
+    sameSite,
     path: '/',
   });
 }

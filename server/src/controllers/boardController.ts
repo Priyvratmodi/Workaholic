@@ -191,6 +191,7 @@ export async function getBoardById(req: Request, res: Response) {
       boardId: l.boardId,
       title: l.title,
       emoji: l.emoji,
+      color: l.color,
       position: l.position,
       isArchived: l.isArchived,
       createdAt: l.createdAt.toISOString(),
@@ -378,4 +379,43 @@ export async function getBoardActivity(req: Request, res: Response) {
   });
 
   res.json({ activities: parsedActivities });
+}
+
+export async function createBoardLabel(req: Request, res: Response) {
+  if (!req.user) {
+    return sendError(res, 401, 'UNAUTHORIZED', 'Authentication required');
+  }
+
+  const boardId = req.params.boardId;
+  const { name, color } = req.body;
+
+  const label = await prisma.label.create({
+    data: {
+      boardId,
+      name: name ? name.trim() : null,
+      color: color.trim(),
+    },
+  });
+
+  res.status(201).json({
+    label: {
+      id: label.id,
+      boardId: label.boardId,
+      name: label.name,
+      color: label.color,
+    },
+  });
+}
+
+export async function deleteBoardLabel(req: Request, res: Response) {
+  if (!req.user) {
+    return sendError(res, 401, 'UNAUTHORIZED', 'Authentication required');
+  }
+
+  const { boardId, labelId } = req.params;
+  await prisma.label.deleteMany({
+    where: { id: labelId, boardId },
+  });
+
+  res.json({ message: 'Label deleted' });
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CardInfo } from '@workaholic/shared';
+import { Icon, IconName } from '../ui/Icon.js';
+import { getLabelTextColor } from '../../utils/colors.js';
 
 interface CardItemProps {
   card: CardInfo;
@@ -40,7 +42,7 @@ export const CardItem: React.FC<CardItemProps> = ({
   };
 
   // Due date status
-  const getDueDateStatus = () => {
+  const getDueDateStatus = (): { label: string; colorClass: string; icon: IconName } | null => {
     if (!card.dueDate) return null;
     if (card.isComplete) {
       return {
@@ -48,7 +50,7 @@ export const CardItem: React.FC<CardItemProps> = ({
           month: 'short',
           day: 'numeric',
         }),
-        colorClass: 'bg-[#4BCE97]/20 text-[#4BCE97] border-[#4BCE97]/40',
+        colorClass: 'bg-emerald-50 text-emerald-800 border-emerald-200',
         icon: 'task_alt',
       };
     }
@@ -62,14 +64,14 @@ export const CardItem: React.FC<CardItemProps> = ({
           month: 'short',
           day: 'numeric',
         }),
-        colorClass: 'bg-[#F87168]/20 text-[#F87168] border-[#F87168]/40 font-semibold',
+        colorClass: 'bg-red-50 text-red-800 border-red-200 font-semibold',
         icon: 'schedule',
       };
     }
     if (diffHours <= 24) {
       return {
         label: 'Due soon',
-        colorClass: 'bg-[#F5CD47]/20 text-[#F5CD47] border-[#F5CD47]/40 font-medium',
+        colorClass: 'bg-amber-50 text-amber-800 border-amber-200 font-medium',
         icon: 'schedule',
       };
     }
@@ -78,7 +80,7 @@ export const CardItem: React.FC<CardItemProps> = ({
         month: 'short',
         day: 'numeric',
       }),
-      colorClass: 'bg-[#2C333A] text-[#B6C2CF] border-[#38414A]',
+      colorClass: 'bg-surface-container text-text-secondary border-border',
       icon: 'calendar_today',
     };
   };
@@ -104,10 +106,10 @@ export const CardItem: React.FC<CardItemProps> = ({
       onClick={() => onOpenCard?.(card.id)}
       className={`rounded-xl p-3 flex flex-col gap-2.5 transition-all duration-150 select-none group cursor-pointer border ${
         isDragOverlay
-          ? 'bg-[#2C333A] border-[#579DFF] shadow-2xl scale-105 rotate-2 opacity-95 ring-2 ring-[#579DFF]'
+          ? 'bg-card border-primary shadow-2xl scale-105 rotate-2 opacity-95 ring-2 ring-primary'
           : isDragging
-          ? 'opacity-30 bg-[#22272B] border-dashed border-[#579DFF]'
-          : 'bg-[#2C333A] hover:bg-[#333B44] border-[#38414A]/80 hover:border-[#579DFF]/60 shadow-sm'
+          ? 'opacity-30 bg-column border-dashed border-primary'
+          : 'bg-card hover:bg-card-hover border-border hover:border-primary/60 shadow-xs'
       }`}
     >
       {/* Cover Color Strip or Labels */}
@@ -123,8 +125,8 @@ export const CardItem: React.FC<CardItemProps> = ({
           {card.labels.map((l) => (
             <span
               key={l.id}
-              className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-white tracking-wide truncate max-w-[160px]"
-              style={{ backgroundColor: l.color }}
+              className="px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wide truncate max-w-[160px]"
+              style={{ backgroundColor: l.color, color: getLabelTextColor(l.color) }}
             >
               {l.name || '•'}
             </span>
@@ -143,21 +145,21 @@ export const CardItem: React.FC<CardItemProps> = ({
             }}
             className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
               card.isComplete
-                ? 'bg-[#4BCE97] border-[#4BCE97] text-[#1D2125]'
-                : 'border-[#8C9BAB] hover:border-[#579DFF] text-transparent'
+                ? 'bg-emerald-600 border-emerald-600 text-white'
+                : 'border-text-muted hover:border-primary'
             }`}
             title={card.isComplete ? 'Mark incomplete' : 'Mark complete'}
           >
-            <span className="material-symbols-outlined text-[13px] font-bold">
-              check
-            </span>
+            {card.isComplete && (
+              <Icon name="check" size={13} className="font-bold text-white" />
+            )}
           </button>
         )}
         <h4
           className={`text-xs font-medium leading-snug flex-1 transition-colors ${
             card.isComplete
-              ? 'line-through text-[#8C9BAB]'
-              : 'text-white group-hover:text-[#85B8FF]'
+              ? 'line-through text-text-muted'
+              : 'text-text-primary group-hover:text-primary'
           }`}
         >
           {card.title}
@@ -171,16 +173,14 @@ export const CardItem: React.FC<CardItemProps> = ({
         card.attachments.length > 0 ||
         card.description ||
         card.members.length > 0) && (
-        <div className="flex items-center justify-between pt-1 gap-2 text-[11px] text-[#8C9BAB]">
+        <div className="flex items-center justify-between pt-1 gap-2 text-[11px] text-text-muted">
           <div className="flex items-center gap-2 flex-wrap">
             {/* Due date badge */}
             {dueDateStatus && (
               <span
                 className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] ${dueDateStatus.colorClass}`}
               >
-                <span className="material-symbols-outlined text-[12px]">
-                  {dueDateStatus.icon}
-                </span>
+                <Icon name={dueDateStatus.icon} size={12} />
                 <span>{dueDateStatus.label}</span>
               </span>
             )}
@@ -190,13 +190,11 @@ export const CardItem: React.FC<CardItemProps> = ({
               <span
                 className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] ${
                   doneChecklistItems === totalChecklistItems
-                    ? 'bg-[#4BCE97]/20 text-[#4BCE97] border-[#4BCE97]/40'
-                    : 'bg-[#22272B] text-[#B6C2CF] border-[#38414A]'
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                    : 'bg-surface-container text-text-secondary border-border'
                 }`}
               >
-                <span className="material-symbols-outlined text-[12px]">
-                  check_box
-                </span>
+                <Icon name="check_box" size={12} />
                 <span>
                   {doneChecklistItems}/{totalChecklistItems}
                 </span>
@@ -206,24 +204,20 @@ export const CardItem: React.FC<CardItemProps> = ({
             {/* Description indicator */}
             {card.description && (
               <span
-                className="flex items-center text-[#8C9BAB]"
+                className="flex items-center text-text-muted"
                 title="This card has a description"
               >
-                <span className="material-symbols-outlined text-[14px]">
-                  description
-                </span>
+                <Icon name="description" size={14} />
               </span>
             )}
 
             {/* Comments badge */}
             {card.commentsCount !== undefined && card.commentsCount > 0 && (
               <span
-                className="inline-flex items-center gap-1 text-[#8C9BAB]"
+                className="inline-flex items-center gap-1 text-text-muted"
                 title={`${card.commentsCount} comments`}
               >
-                <span className="material-symbols-outlined text-[13px]">
-                  chat_bubble_outline
-                </span>
+                <Icon name="chat_bubble_outline" size={13} />
                 <span>{card.commentsCount}</span>
               </span>
             )}
@@ -231,12 +225,10 @@ export const CardItem: React.FC<CardItemProps> = ({
             {/* Attachments badge */}
             {card.attachments.length > 0 && (
               <span
-                className="inline-flex items-center gap-0.5 text-[#8C9BAB]"
+                className="inline-flex items-center gap-0.5 text-text-muted"
                 title={`${card.attachments.length} attachments`}
               >
-                <span className="material-symbols-outlined text-[13px]">
-                  attach_file
-                </span>
+                <Icon name="attach_file" size={13} />
                 <span>{card.attachments.length}</span>
               </span>
             )}
@@ -248,7 +240,7 @@ export const CardItem: React.FC<CardItemProps> = ({
               {card.members.slice(0, 3).map((m, idx) => (
                 <div
                   key={m.id || idx}
-                  className="w-5 h-5 rounded-full bg-[#579DFF]/20 text-[#579DFF] text-[9px] font-bold flex items-center justify-center ring-1 ring-[#2C333A]"
+                  className="w-5 h-5 rounded-full bg-primary/20 text-primary text-[9px] font-bold flex items-center justify-center ring-1 ring-card"
                   title={m.name}
                 >
                   {m.name.slice(0, 2).toUpperCase()}

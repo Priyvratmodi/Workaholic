@@ -125,3 +125,48 @@ npm test
 npm run build
 ```
 Builds the shared TypeScript library, compiles the Express backend, and builds the optimized production Vite bundle for the client.
+
+---
+
+## 🌐 Deployment Guide
+
+### Option 1: All-in-One Docker Deployment (Recommended — Render / Railway / Fly.io)
+Because Workaholic includes an optimized multi-stage `Dockerfile` that packages both the Vite React frontend and the Express backend into a single container:
+
+1. **Push your repository** to GitHub or GitLab.
+2. **On Render / Railway**:
+   - Create a **New Web Service** and connect your GitHub repo.
+   - Choose **Docker** as the runtime (Render will automatically detect the root `Dockerfile`).
+   - Add Environment Variables:
+     - `PORT`: `4000`
+     - `DATABASE_URL`: `file:./dev.db`
+     - `JWT_SECRET`: `<generate-a-random-secure-string>`
+     - `GEMINI_API_KEY`: `<your-gemini-api-key>`
+     - `NODE_ENV`: `production`
+   - Click **Deploy**. Your entire application (API, frontend, and SQLite database) will be live with a free HTTPS URL.
+
+---
+
+### Option 2: Split Deployment (Vercel Frontend + Render/Railway Backend)
+If you prefer hosting the client on **Vercel**:
+
+#### 1. Backend (Render / Railway):
+- Deploy the repository as a Node/Docker Web Service.
+- Set environment variables:
+  - `PORT`: `4000`
+  - `DATABASE_URL`: `file:./dev.db`
+  - `JWT_SECRET`: `<random-secret>`
+  - `CLIENT_URL`: `https://your-app.vercel.app`
+  - `COOKIE_SAME_SITE`: `none`
+  - `GEMINI_API_KEY`: `<your-gemini-api-key>`
+
+#### 2. Frontend (Vercel):
+- In the Vercel Dashboard, click **Add New Project** and import this repository.
+- Configure project settings:
+  - **Framework Preset**: `Vite`
+  - **Root Directory**: `client`
+  - **Build Command**: `npm run build`
+  - **Output Directory**: `dist`
+- Add Environment Variable:
+  - `VITE_API_URL`: `https://your-backend-service.onrender.com`
+- Click **Deploy**.

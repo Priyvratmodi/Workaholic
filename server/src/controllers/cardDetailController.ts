@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
+import fs from 'fs';
+import path from 'path';
 import { prisma } from '../db.js';
 import { sendError } from '../utils/errors.js';
+import { uploadsDir } from '../utils/upload.js';
 import { getPositionBetween, CardInfo, CommentInfo, ActivityInfo } from '@workaholic/shared';
 
 export async function getCardDetails(req: Request, res: Response) {
@@ -501,6 +504,15 @@ export async function addAttachment(req: Request, res: Response) {
   const cardId = req.params.cardId;
   const { name, url, size, mimeType } = req.body;
 
+  const card = await prisma.card.findUnique({
+    where: { id: cardId },
+    include: { list: { select: { boardId: true } } },
+  });
+
+  if (!card) {
+    return sendError(res, 404, 'NOT_FOUND', 'Card not found');
+  }
+
   const attachment = await prisma.attachment.create({
     data: {
       cardId,
@@ -508,6 +520,80 @@ export async function addAttachment(req: Request, res: Response) {
       url: url.trim(),
       size: size ?? null,
       mimeType: mimeType ?? null,
+    },
+  });
+
+  await prisma.activity.create({
+    data: {
+      boardId: card.list.boardId,
+      userId: req.user.id,
+      type: 'card_updated',
+      payload: JSON.stringify({
+        user: req.user.name,
+        cardTitle: card.title,
+        attachmentName: name.trim(),
+        action: 'attachment_added',
+      }),
+    },
+  });
+
+  res.status(201).json({
+    attachment: {
+      id: attachment.id,
+      cardId: attachment.cardId,
+      name: attachment.name,
+      url: attachment.url,
+      size: attachment.size,
+      mimeType: attachment.mimeType,
+      createdAt: attachment.createdAt.toISOString(),
+    },
+  });
+}
+
+export async function uploadAttachment(req: Request, res: Response) {
+  if (!req.user) {
+    return sendError(res, 401, 'UNAUTHORIZED', 'Authentication required');
+  }
+
+  const cardId = req.params.cardId;
+  const file = req.file;
+
+  if (!file) {
+    return sendError(res, 400, 'BAD_REQUEST', 'No file uploaded');
+  }
+
+  const card = await prisma.card.findUnique({
+    where: { id: cardId },
+    include: { list: { select: { boardId: true } } },
+  });
+
+  if (!card) {
+    return sendError(res, 404, 'NOT_FOUND', 'Card not found');
+  }
+
+  const url = `/uploads/${file.filename}`;
+
+  const attachment = await prisma.attachment.create({
+    data: {
+      cardId,
+      name: file.originalname,
+      url,
+      size: file.size,
+      mimeType: file.mimetype,
+    },
+  });
+
+  await prisma.activity.create({
+    data: {
+      boardId: card.list.boardId,
+      userId: req.user.id,
+      type: 'card_updated',
+      payload: JSON.stringify({
+        user: req.user.name,
+        cardTitle: card.title,
+        attachmentName: file.originalname,
+        action: 'attachment_uploaded',
+      }),
     },
   });
 
@@ -530,6 +616,23 @@ export async function deleteAttachment(req: Request, res: Response) {
   }
 
   const attachmentId = req.params.id;
+
+  const attachment = await prisma.attachment.findUnique({
+    where: { id: attachmentId },
+  });
+
+  if (!attachment) {
+    return sendError(res, 404, 'NOT_FOUND', 'Attachment not found');
+  }
+
+  // Delete physical file if uploaded locally
+  if (attachment.url && attachment.url.startsWith('/uploads/')) {
+    const filename = path.basename(attachment.url);
+    const filePath = path.join(uploadsDir, filename);
+    fs.promises.unlink(filePath).catch(() => {
+      // Ignore if file was already removed
+    });
+  }
 
   await prisma.attachment.delete({
     where: { id: attachmentId },

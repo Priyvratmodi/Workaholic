@@ -23,7 +23,9 @@ import { CardItem } from './CardItem.js';
 import { ActivityDrawer } from './ActivityDrawer.js';
 import { CardModal } from '../card-modal/CardModal.js';
 import { ShareModal } from '../share/ShareModal.js';
+import { AISummaryModal } from './AISummaryModal.js';
 import { getBackgroundClass } from '../../utils/backgrounds.js';
+import { Icon } from '../ui/Icon.js';
 
 export const BoardPage: React.FC = () => {
   const { id: boardId, cardId } = useParams<{ id: string; cardId?: string }>();
@@ -34,6 +36,7 @@ export const BoardPage: React.FC = () => {
   const [activeCard, setActiveCard] = useState<CardInfo | null>(null);
   const [isActivityOpen, setIsActivityOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isAISummaryOpen, setIsAISummaryOpen] = useState(false);
   const [isAddingList, setIsAddingList] = useState(false);
   const [newListTitle, setNewListTitle] = useState('');
 
@@ -135,6 +138,23 @@ export const BoardPage: React.FC = () => {
         ...old,
         lists: old.lists.filter((l) => l.id !== listId),
       }));
+    },
+  });
+
+  // Update List Color Mutation
+  const updateListColorMutation = useMutation({
+    mutationFn: ({ listId, color }: { listId: string; color: string | null }) =>
+      updateList(listId, { color }),
+    onMutate: ({ listId, color }) => {
+      setBoardCache((old) => ({
+        ...old,
+        lists: old.lists.map((l) =>
+          l.id === listId ? { ...l, color } : l
+        ),
+      }));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['board', boardId] });
     },
   });
 
@@ -333,10 +353,10 @@ export const BoardPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#1D2125] flex items-center justify-center text-white">
+      <div className="min-h-screen bg-canvas flex items-center justify-center text-text-primary">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-[#579DFF] border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-sm text-[#8C9BAB]">Loading board...</span>
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-sm text-text-muted">Loading board...</span>
         </div>
       </div>
     );
@@ -344,18 +364,18 @@ export const BoardPage: React.FC = () => {
 
   if (isError || !board) {
     return (
-      <div className="min-h-screen bg-[#1D2125] flex items-center justify-center text-white p-4">
-        <div className="p-6 rounded-2xl bg-[#22272B] border border-red-900 max-w-md w-full flex flex-col gap-3 text-center">
-          <span className="material-symbols-outlined text-red-400 text-4xl">error</span>
-          <h2 className="text-lg font-bold text-white">Board Not Found</h2>
-          <p className="text-xs text-[#8C9BAB]">
+      <div className="min-h-screen bg-canvas flex items-center justify-center text-text-primary p-4">
+        <div className="p-6 rounded-2xl bg-surface-container border border-red-900/50 max-w-md w-full flex flex-col gap-3 text-center">
+          <Icon name="error" size={36} className="text-red-400 mx-auto" />
+          <h2 className="text-lg font-bold text-text-primary">Board Not Found</h2>
+          <p className="text-xs text-text-muted">
             {(error as any)?.message ||
               'This board does not exist or you do not have permission to view it.'}
           </p>
           <button
             type="button"
             onClick={() => navigate('/boards')}
-            className="mt-2 px-4 py-2 rounded-xl bg-[#579DFF] text-[#1D2125] font-semibold text-xs"
+            className="mt-2 px-4 py-2 rounded-xl bg-primary text-canvas font-semibold text-xs"
           >
             Back to Dashboard
           </button>
@@ -376,6 +396,7 @@ export const BoardPage: React.FC = () => {
         onToggleStar={() => toggleStarMutation.mutate()}
         onUpdateTitle={(newTitle) => updateTitleMutation.mutateAsync(newTitle)}
         onOpenShareModal={() => setIsShareModalOpen(true)}
+        onOpenAISummary={() => setIsAISummaryOpen(true)}
         onToggleActivity={() => setIsActivityOpen(!isActivityOpen)}
         isActivityOpen={isActivityOpen}
       />
@@ -404,6 +425,9 @@ export const BoardPage: React.FC = () => {
               onUpdateListTitle={(listId, newTitle) =>
                 updateListTitleMutation.mutateAsync({ listId, newTitle })
               }
+              onUpdateListColor={(listId, color) =>
+                updateListColorMutation.mutateAsync({ listId, color })
+              }
               onDeleteList={(listId) => deleteListMutation.mutateAsync(listId)}
             />
           ))}
@@ -412,7 +436,7 @@ export const BoardPage: React.FC = () => {
           {!isReadOnly && (
             <div className="w-[272px] shrink-0">
               {isAddingList ? (
-                <div className="bg-[#22272B] rounded-2xl p-3 border border-[#38414A] flex flex-col gap-2.5 shadow-md">
+                <div className="bg-column rounded-2xl p-3 border border-border flex flex-col gap-2.5 shadow-md">
                   <input
                     type="text"
                     value={newListTitle}
@@ -428,7 +452,7 @@ export const BoardPage: React.FC = () => {
                     }}
                     placeholder="Enter list title..."
                     autoFocus
-                    className="w-full px-3 py-2 rounded-xl bg-[#1D2125] text-white placeholder-[#8C9BAB] text-xs border border-[#38414A] focus:border-[#579DFF] focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl bg-surface-container text-text-primary placeholder:text-text-muted text-xs border border-border focus:border-primary focus:outline-none"
                   />
                   <div className="flex items-center gap-2">
                     <button
@@ -439,7 +463,7 @@ export const BoardPage: React.FC = () => {
                           addListMutation.mutate(newListTitle.trim());
                         }
                       }}
-                      className="px-3.5 py-1.5 rounded-lg bg-[#579DFF] hover:bg-[#85B8FF] text-[#1D2125] text-xs font-semibold transition-colors disabled:opacity-50"
+                      className="px-3.5 py-1.5 rounded-lg bg-primary hover:bg-primary-hover text-canvas text-xs font-semibold transition-colors disabled:opacity-60"
                     >
                       Add list
                     </button>
@@ -449,9 +473,9 @@ export const BoardPage: React.FC = () => {
                         setIsAddingList(false);
                         setNewListTitle('');
                       }}
-                      className="w-7 h-7 rounded-lg text-[#8C9BAB] hover:text-white hover:bg-[#2C333A] flex items-center justify-center transition-colors"
+                      className="w-7 h-7 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-container-high flex items-center justify-center transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[18px]">close</span>
+                      <Icon name="close" size={18} />
                     </button>
                   </div>
                 </div>
@@ -459,10 +483,10 @@ export const BoardPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsAddingList(true)}
-                  className="w-full flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#22272B]/60 hover:bg-[#22272B] border border-dashed border-[#38414A] hover:border-[#579DFF]/60 text-[#B6C2CF] hover:text-white transition-all text-xs font-semibold backdrop-blur-sm shadow-sm"
+                  className="w-full flex items-center gap-2 px-4 py-3 rounded-2xl bg-column/80 hover:bg-column border border-dashed border-border hover:border-primary/60 text-text-secondary hover:text-text-primary transition-all text-xs font-semibold backdrop-blur-sm shadow-sm"
                 >
-                  <span className="material-symbols-outlined text-[18px]">add</span>
-                  <span>Add another list</span>
+                  <Icon name="add" size={18} />
+                  <span>{board.lists.length === 0 ? 'Add a list' : 'Add another list'}</span>
                 </button>
               )}
             </div>
@@ -499,6 +523,15 @@ export const BoardPage: React.FC = () => {
         onMembersChanged={() => {
           queryClient.invalidateQueries({ queryKey: ['board', boardId] });
         }}
+      />
+
+      {/* AI Board Summary Modal */}
+      <AISummaryModal
+        isOpen={isAISummaryOpen}
+        onClose={() => setIsAISummaryOpen(false)}
+        boardId={board.id}
+        boardTitle={board.title}
+        onCardClick={(cardId) => navigate(`/boards/${board.id}/cards/${cardId}`)}
       />
     </div>
   );

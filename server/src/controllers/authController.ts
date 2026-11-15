@@ -29,6 +29,8 @@ export async function register(req: Request, res: Response) {
         name: true,
         email: true,
         avatarUrl: true,
+        themePreference: true,
+        reduceMotion: true,
       },
     });
 
@@ -91,6 +93,8 @@ export async function login(req: Request, res: Response) {
           name: user.name,
           email: user.email,
           avatarUrl: user.avatarUrl,
+          themePreference: (user as any).themePreference || 'SYSTEM',
+          reduceMotion: !!(user as any).reduceMotion,
         },
       },
     });

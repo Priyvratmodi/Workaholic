@@ -6,6 +6,7 @@ import {
   createBoardSchema,
   updateBoardSchema,
   createListSchema,
+  createLabelSchema,
   inviteMemberSchema,
   updateMemberRoleSchema,
 } from '@workaholic/shared';
@@ -18,7 +19,10 @@ import {
   starBoard,
   unstarBoard,
   getBoardActivity,
+  createBoardLabel,
+  deleteBoardLabel,
 } from '../controllers/boardController.js';
+import { getBoardAISummary } from '../controllers/aiController.js';
 import { createList } from '../controllers/listController.js';
 import {
   getMembers,
@@ -51,6 +55,10 @@ router.delete('/:id/star', requireAuth, requireBoardPermission('view'), unstarBo
 // Get board activity feed
 router.get('/:id/activity', requireAuth, requireBoardPermission('view'), getBoardActivity);
 
+// AI Board Summary
+router.get('/:id/ai-summary', requireAuth, requireBoardPermission('view'), getBoardAISummary);
+router.post('/:id/ai-summary', requireAuth, requireBoardPermission('view'), getBoardAISummary);
+
 // Create a list in this board
 router.post('/:id/lists', requireAuth, requireBoardPermission('edit'), validate(createListSchema), (req, res) => {
   req.params.boardId = req.params.id;
@@ -62,5 +70,15 @@ router.get('/:id/members', requireAuth, requireBoardPermission('view'), getMembe
 router.post('/:id/members', requireAuth, requireBoardPermission('manageMembers'), validate(inviteMemberSchema), inviteMember);
 router.patch('/:id/members/:userId', requireAuth, requireBoardPermission('manageMembers'), validate(updateMemberRoleSchema), updateMemberRole);
 router.delete('/:id/members/:userId', requireAuth, requireBoardPermission('view'), removeMember);
+
+// Label management routes
+router.post('/:id/labels', requireAuth, requireBoardPermission('edit'), validate(createLabelSchema), (req, res) => {
+  req.params.boardId = req.params.id;
+  return createBoardLabel(req, res);
+});
+router.delete('/:id/labels/:labelId', requireAuth, requireBoardPermission('edit'), (req, res) => {
+  req.params.boardId = req.params.id;
+  return deleteBoardLabel(req, res);
+});
 
 export default router;

@@ -1,10 +1,14 @@
 import { Role } from './permissions.js';
 
+export type ThemePreference = 'LIGHT' | 'DARK' | 'SYSTEM';
+
 export interface UserSummary {
   id: string;
   name: string;
   email: string;
   avatarUrl?: string | null;
+  themePreference?: ThemePreference;
+  reduceMotion?: boolean;
 }
 
 export interface BoardMemberInfo {
@@ -97,6 +101,7 @@ export interface ListInfo {
   boardId: string;
   title: string;
   emoji: string | null;
+  color?: string | null;
   position: string;
   isArchived: boolean;
   createdAt: string;
@@ -127,3 +132,45 @@ export interface BoardSummary {
   members: UserSummary[];
   activeTasksCount: number;
 }
+
+export interface AttentionItem {
+  cardId?: string;
+  title: string;
+  details: string;
+  badge: string;
+  severity: 'high' | 'medium' | 'low';
+}
+
+export interface ListBreakdownCard {
+  id: string;
+  title: string;
+  tag?: string;
+  tagColor?: 'red' | 'amber' | 'green' | 'default';
+  assigneeInitials?: string;
+  assigneeName?: string;
+  isUnassigned?: boolean;
+}
+
+export interface ListBreakdown {
+  listId: string;
+  title: string;
+  count: number;
+  summary: string;
+  cards: ListBreakdownCard[];
+}
+
+export interface AIBoardSummary {
+  overviewNarrative: string;
+  situationAssessment?: string;
+  recommendations?: string[];
+  doneCount: number;
+  blockerCount: number;
+  overdueCount: number;
+  totalCards: number;
+  attentionItems: AttentionItem[];
+  listBreakdowns: ListBreakdown[];
+  generatedAt: string;
+  isAIGenerated: boolean;
+  apiKeyConfigured: boolean;
+}
+

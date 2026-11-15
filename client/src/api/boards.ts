@@ -1,5 +1,5 @@
 import { apiRequest } from './client.js';
-import { BoardSummary, BoardBundle, TemplateDefinition } from '@workaholic/shared';
+import { BoardSummary, BoardBundle, TemplateDefinition, LabelInfo, AIBoardSummary } from '@workaholic/shared';
 
 export async function fetchBoards(): Promise<BoardSummary[]> {
   const res = await apiRequest<{ boards: BoardSummary[] }>('/api/boards');
@@ -58,3 +58,35 @@ export async function fetchTemplates(): Promise<TemplateDefinition[]> {
   const res = await apiRequest<{ templates: TemplateDefinition[] }>('/api/templates');
   return res.templates;
 }
+
+export async function createBoardLabel(
+  boardId: string,
+  data: { name?: string | null; color: string }
+): Promise<LabelInfo> {
+  const res = await apiRequest<{ label: LabelInfo }>(`/api/boards/${boardId}/labels`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  return res.label;
+}
+
+export async function deleteBoardLabel(
+  boardId: string,
+  labelId: string
+): Promise<void> {
+  await apiRequest(`/api/boards/${boardId}/labels/${labelId}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function fetchAIBoardSummary(boardId: string, apiKey?: string): Promise<AIBoardSummary> {
+  const headers: Record<string, string> = {};
+  if (apiKey) {
+    headers['X-Gemini-Api-Key'] = apiKey;
+  }
+  const res = await apiRequest<{ summary: AIBoardSummary }>(`/api/boards/${boardId}/ai-summary`, {
+    headers,
+  });
+  return res.summary;
+}
+

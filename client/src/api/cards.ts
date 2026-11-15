@@ -185,6 +185,23 @@ export async function addAttachment(
   return res.attachment;
 }
 
+export async function uploadAttachment(
+  cardId: string,
+  file: File
+): Promise<AttachmentInfo> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await apiRequest<{ attachment: AttachmentInfo }>(
+    `/api/cards/${cardId}/attachments/upload`,
+    {
+      method: 'POST',
+      body: formData,
+    }
+  );
+  return res.attachment;
+}
+
 export async function deleteAttachment(attachmentId: string): Promise<void> {
   await apiRequest(`/api/attachments/${attachmentId}`, {
     method: 'DELETE',

@@ -14,11 +14,16 @@ export async function apiRequest<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const url = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const apiBase = import.meta.env.VITE_API_URL || '';
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${apiBase}${cleanEndpoint}`;
 
-  const defaultHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+  const defaultHeaders: Record<string, string> = isFormData
+    ? {}
+    : {
+        'Content-Type': 'application/json',
+      };
 
   const response = await fetch(url, {
     ...options,

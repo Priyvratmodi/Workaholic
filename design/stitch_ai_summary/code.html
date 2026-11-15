@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-tertiary-fixed": "#2a1700",
+        "inverse-primary": "#c1c1ff",
+        "surface-container": "#eaedff",
+        "tertiary-fixed": "#ffddb8",
+        "surface-tint": "#4e4ec9",
+        "primary-fixed-dim": "#c1c1ff",
+        "surface-variant": "#dae2fd",
+        "on-primary": "#ffffff",
+        "error": "#ba1a1a",
+        "secondary-fixed-dim": "#4edea3",
+        "surface-container-high": "#e2e7ff",
+        "primary-fixed": "#e2dfff",
+        "tertiary-fixed-dim": "#ffb95f",
+        "secondary-container": "#6cf8bb",
+        "on-background": "#131b2e",
+        "on-secondary-container": "#00714d",
+        "on-primary-container": "#edeaff",
+        "error-container": "#ffdad6",
+        "on-primary-fixed-variant": "#3533b0",
+        "on-error-container": "#93000a",
+        "primary-container": "#5b5bd6",
+        "on-surface": "#131b2e",
+        "on-secondary-fixed": "#002113",
+        "secondary-fixed": "#6ffbbe",
+        "surface-dim": "#d2d9f4",
+        "surface-bright": "#faf8ff",
+        "on-surface-variant": "#464553",
+        "secondary": "#006c49",
+        "surface-container-lowest": "#ffffff",
+        "on-error": "#ffffff",
+        "tertiary": "#754900",
+        "surface": "#faf8ff",
+        "on-tertiary-container": "#ffe8d1",
+        "on-secondary": "#ffffff",
+        "on-secondary-fixed-variant": "#005236",
+        "outline-variant": "#c7c4d6",
+        "inverse-on-surface": "#eef0ff",
+        "primary": "#4241bc",
+        "outline": "#777585",
+        "surface-container-highest": "#dae2fd",
+        "inverse-surface": "#283044",
+        "on-primary-fixed": "#0a006b",
+        "surface-container-low": "#f2f3ff",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#965e00",
+        "background": "#faf8ff",
+        "on-tertiary-fixed-variant": "#653e00"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "space-lg": "1rem",
+        "margin": "1.5rem",
+        "space-xl": "1.5rem",
+        "space-xs": "0.25rem",
+        "margin-mobile": "1rem",
+        "gutter-board": "1.25rem",
+        "space-sm": "0.5rem",
+        "space-md": "0.75rem",
+        "gutter": "1rem"
+      },
+      "fontFamily": {
+        "body-sm": ["Inter"],
+        "title-md": ["Inter"],
+        "headline-xl-mobile": ["Inter"],
+        "body-lg": ["Inter"],
+        "headline-lg": ["Inter"],
+        "label-sm": ["Inter"],
+        "headline-xl": ["Inter"],
+        "label-md": ["Inter"],
+        "headline-sm": ["Inter"],
+        "body-md": ["Inter"],
+        "mono-sm": ["JetBrains Mono"]
+      },
+      "fontSize": {
+        "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400" }],
+        "title-md": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+        "headline-xl-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+        "body-lg": ["15px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+        "headline-lg": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+        "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+        "headline-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+        "body-md": ["13px", { "lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+        "mono-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+      }
+    }
+  }
+};</script></head><body class="bg-[#fafafc] font-body-md text-[#1e293b] antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-white z-40 flex flex-col justify-between border-r border-[#e2e8f0] shadow-sm"><div class="flex flex-col"><div class="h-16 px-space-xl flex items-center gap-space-sm bg-white border-b border-[#f1f5f9]"><div class="w-7 h-7 rounded bg-[#5b5bd6] flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-white text-[18px]">terminal</span></div><span class="font-headline-sm text-headline-sm text-[#0f172a] tracking-tight font-semibold">Workaholic</span></div><div class="px-space-md py-space-sm"><div class="px-space-md py-space-xs text-[#64748b] font-label-sm text-label-sm uppercase tracking-wider font-semibold">Workspace</div><nav class="flex flex-col gap-space-xs mt-space-xs" data-active-classes="bg-[#f2f3ff] text-[#4241bc] font-medium rounded-lg"><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm transition-colors bg-[#f2f3ff] text-[#4241bc] font-medium rounded-lg" data-path="kanban-board" href="#"><span class="material-symbols-outlined text-[20px]">view_kanban</span><span class="font-body-md text-body-md">Boards</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-[#64748b] hover:bg-[#f8fafc] hover:text-[#0f172a] transition-colors" data-path="board-templates" href="#"><span class="material-symbols-outlined text-[20px]">auto_awesome_mosaic</span><span class="font-body-md text-body-md">Templates</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-[#64748b] hover:bg-[#f8fafc] hover:text-[#0f172a] transition-colors" data-path="team-members" href="#"><span class="material-symbols-outlined text-[20px]">group</span><span class="font-body-md text-body-md">Members</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-[#64748b] hover:bg-[#f8fafc] hover:text-[#0f172a] transition-colors" data-path="workspace-settings" href="#"><span class="material-symbols-outlined text-[20px]">tune</span><span class="font-body-md text-body-md">Settings</span></a></nav></div></div><div class="p-space-md bg-[#f8fafc] mx-space-md mb-space-lg rounded-xl border border-[#e2e8f0] flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-[#64748b] uppercase font-semibold">Capacity Plan</span><span class="font-body-sm text-body-sm text-[#1e293b] font-medium">Sprint 14 in progress</span></div><span class="material-symbols-outlined text-[#d97706] text-[20px]">bolt</span></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-white/90 backdrop-blur-xl z-30 flex items-center justify-between px-space-xl border-b border-[#e2e8f0] shadow-sm"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm px-space-md py-space-xs rounded-lg bg-[#f8fafc] border border-[#e2e8f0] hover:bg-[#f1f5f9] transition-colors cursor-pointer"><span class="material-symbols-outlined text-[#4241bc] text-[20px]">domain</span><span class="font-headline-sm text-headline-sm text-[#0f172a]">Acme Corp</span><span class="material-symbols-outlined text-[#64748b] text-[18px]">unfold_more</span></div><div class="h-5 w-[1px] bg-[#e2e8f0]"></div><div class="relative flex items-center"><span class="material-symbols-outlined text-[#64748b] absolute left-space-md text-[18px]">search</span><input class="w-72 bg-[#f8fafc] border border-[#e2e8f0] pl-9 pr-space-md py-1.5 rounded-lg text-[#0f172a] font-body-sm text-body-sm placeholder:text-[#94a3b8] focus:outline-none focus:ring-1 focus:ring-[#5b5bd6] focus:border-[#5b5bd6]" placeholder="Search tasks, epics, members..." type="text"/></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><button class="w-9 h-9 rounded-lg flex items-center justify-center text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0f172a] transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">filter_list</span></button><button class="w-9 h-9 rounded-lg flex items-center justify-center text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0f172a] transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button></div><div class="h-5 w-[1px] bg-[#e2e8f0]"></div><div class="flex items-center gap-space-md"><div class="flex flex-col text-right hidden sm:flex"><span class="font-body-sm text-body-sm font-semibold text-[#0f172a]">Aarav Patel</span><span class="font-label-sm text-label-sm text-[#64748b]">Staff Architect</span></div><div class="w-8 h-8 rounded-full bg-[#5b5bd6] text-white flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-white text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-[#fafafc] min-h-screen"><div class="flex flex-col w-full relative min-h-[calc(100vh-4rem)]">
+<!-- BACKGROUND: Dimmed and lightly blurred realistic Kanban board view -->
+<div aria-hidden="true" class="w-full flex-1 p-space-xl opacity-40 filter blur-[3px] select-none pointer-events-none transition-all duration-300">
+<!-- Board Sub-header / Filter bar mock -->
+<div class="flex items-center justify-between pb-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs text-[#4241bc] font-headline-sm">
+<span class="material-symbols-outlined text-[20px]">view_kanban</span>
+<span class="font-semibold text-[#0f172a]">Core Infrastructure &amp; APIs</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-[#f1f5f9] text-[#475569] font-label-sm border border-[#e2e8f0]">Sprint 14</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex -space-x-1.5 overflow-hidden">
+<div class="w-6 h-6 rounded-full bg-[#e2dfff] text-[#3533b0] flex items-center justify-center font-label-sm font-semibold">AP</div>
+<div class="w-6 h-6 rounded-full bg-[#6cf8bb] text-[#00714d] flex items-center justify-center font-label-sm font-semibold">MK</div>
+<div class="w-6 h-6 rounded-full bg-[#ffddb8] text-[#754900] flex items-center justify-center font-label-sm font-semibold">SK</div>
+</div>
+<div class="px-2.5 py-1 rounded bg-white text-[#475569] border border-[#e2e8f0] font-body-sm flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> Filter
+        </div>
+</div>
+</div>
+<!-- Kanban Columns Mock Canvas -->
+<div class="grid grid-cols-6 gap-gutter items-start">
+<!-- Col 1 -->
+<div class="bg-white rounded-xl p-space-sm flex flex-col gap-space-sm border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center justify-between px-space-xs py-1">
+<span class="font-label-sm text-[#0f172a] font-semibold">📚 Resources</span>
+<span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] font-label-sm text-[#64748b]">4</span>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-4/5"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-2/5"></div>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-3/4"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-1/3"></div>
+</div>
+</div>
+<!-- Col 2 -->
+<div class="bg-white rounded-xl p-space-sm flex flex-col gap-space-sm border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center justify-between px-space-xs py-1">
+<span class="font-label-sm text-[#0f172a] font-semibold">🌊 Questions</span>
+<span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] font-label-sm text-[#64748b]">2</span>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-5/6"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-1/2"></div>
+</div>
+</div>
+<!-- Col 3 -->
+<div class="bg-white rounded-xl p-space-sm flex flex-col gap-space-sm border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center justify-between px-space-xs py-1">
+<span class="font-label-sm text-[#0f172a] font-semibold">🔮 To Do</span>
+<span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] font-label-sm text-[#64748b]">5</span>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-3/4"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-2/3"></div>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-4/5"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-1/4"></div>
+</div>
+</div>
+<!-- Col 4 -->
+<div class="bg-white rounded-xl p-space-sm flex flex-col gap-space-sm border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center justify-between px-space-xs py-1">
+<span class="font-label-sm text-[#0f172a] font-semibold">💬 Pending</span>
+<span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] font-label-sm text-[#64748b]">3</span>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-2/3"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-2/5"></div>
+</div>
+</div>
+<!-- Col 5 -->
+<div class="bg-white rounded-xl p-space-sm flex flex-col gap-space-sm border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center justify-between px-space-xs py-1">
+<span class="font-label-sm text-[#0f172a] font-semibold">🚷 Blocked</span>
+<span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] font-label-sm text-[#64748b]">2</span>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-4/5"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-1/3"></div>
+</div>
+</div>
+<!-- Col 6 -->
+<div class="bg-white rounded-xl p-space-sm flex flex-col gap-space-sm border border-[#e2e8f0] shadow-sm">
+<div class="flex items-center justify-between px-space-xs py-1">
+<span class="font-label-sm text-[#0f172a] font-semibold">✨ Done</span>
+<span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] font-label-sm text-[#64748b]">5</span>
+</div>
+<div class="bg-[#f8fafc] border border-[#e2e8f0] p-space-md rounded-lg space-y-2">
+<div class="h-3.5 bg-[#e2e8f0] rounded w-3/4"></div>
+<div class="h-2.5 bg-[#cbd5e1] rounded w-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- BACKDROP OVERLAY -->
+<div class="fixed inset-0 bg-[#0f172a]/35 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-6" id="modalBackdrop">
+<!-- MODAL CONTAINER (Centered, 720px max width, max 85vh height, rounded-2xl) -->
+<div class="w-full max-w-[720px] max-h-[870px] bg-white text-[#1e293b] rounded-2xl flex flex-col shadow-[0_20px_48px_-12px_rgba(15,23,42,0.18)] border border-[#e2e8f0] overflow-hidden transition-all duration-300 relative" id="modalContainer">
+<!-- FIXED HEADER -->
+<header class="px-6 py-4.5 bg-white flex items-center justify-between shrink-0 border-b border-[#f1f5f9] z-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#f2f3ff] flex items-center justify-center text-[#5b5bd6] shrink-0 border border-[#e2dfff]">
+<span class="material-symbols-outlined text-[19px]">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md text-[#0f172a] font-semibold tracking-tight leading-snug">Board summary</h1>
+<span class="font-label-sm text-label-sm text-[#64748b]">Updated 5 min ago</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9] transition-colors" title="Close summary" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</header>
+<!-- SCROLLABLE BODY -->
+<div class="flex-1 overflow-y-auto px-6 py-5 space-y-5" id="modalBody">
+<!-- DYNAMIC CONTENT VIEWPORTS CONTROLLED BY SWITCHER -->
+<!-- 1. NORMAL CONTENT -->
+<div class="space-y-5 block" id="stateNormal">
+<!-- OVERVIEW (Soft tinted blue/indigo card) -->
+<section class="relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-[#f4f5ff] via-[#f8fafc] to-[#ffffff] border border-[#e0e7ff] shadow-sm">
+<!-- Subtle ambient decorative glow in top corner -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-[#5b5bd6]/5 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Hero Header / Executive Badge -->
+<div class="relative flex items-center justify-between gap-2 pb-3.5 mb-3.5 border-b border-[#e2e8f0]">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-[#5b5bd6]/10 flex items-center justify-center text-[#5b5bd6] shadow-inner">
+<span class="material-symbols-outlined text-[18px]">neurology</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm uppercase tracking-wider font-bold text-[#4241bc]">Summary</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#dcfce7] text-[#15803d] tracking-wide flex items-center gap-1 border border-[#bbf7d0]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803d] animate-pulse"></span> Live Analysis
+        </span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-[#64748b] font-label-sm text-[11px]">
+</div>
+</div>
+<!-- Main Takeaway Narrative (Larger & Prominent) -->
+<div class="relative">
+<p class="font-headline-sm text-body-lg text-[#1e293b] leading-relaxed font-normal tracking-tight">
+      Sprint velocity is stable with <span class="font-semibold text-[#15803d]">5 tasks completed</span> this cycle. However, delivery is at risk: <span class="font-semibold text-[#b91c1c]">2 high-priority blockers</span> await IAM approvals, while <span class="font-semibold text-[#b45309] underline decoration-[#f59e0b]/50 underline-offset-4">'Fix payment API'</span> remains overdue with no engineer assigned.
+    </p>
+</div>
+<!-- Quick Stat Indicator Pills -->
+<div class="flex flex-wrap items-center gap-2 pt-3.5 mt-3.5">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#dcfce7] text-[#15803d] font-label-sm border border-[#bbf7d0]">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-semibold">5 Done</span>
+<span class="opacity-80 text-[10px]">this sprint</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#fee2e2] text-[#b91c1c] font-label-sm border border-[#fecaca]">
+<span class="material-symbols-outlined text-[14px]">block</span>
+<span class="font-semibold">2 Blockers</span>
+<span class="opacity-80 text-[10px]">API / IAM</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#fef3c7] text-[#b45309] font-label-sm border border-[#fde68a]">
+<span class="material-symbols-outlined text-[14px]">person_alert</span>
+<span class="font-semibold">1 Overdue</span>
+<span class="opacity-80 text-[10px]">Unassigned</span>
+</div>
+</div>
+<!-- AI Recommendation Callout & Interactive Action Chips -->
+<div class="mt-4 pt-3.5 border-t border-[#e2e8f0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/70 -mx-5 -mb-5 p-4 rounded-b-2xl">
+<div class="flex items-start sm:items-center gap-2 min-w-0">
+</div>
+<div class="flex items-center gap-2 shrink-0">
+</div>
+</div>
+</section>
+<!-- NEEDS ATTENTION -->
+<section class="rounded-xl p-4 bg-[#fffbeb] border border-[#fef3c7] shadow-sm">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[17px] text-[#b45309]">warning</span>
+<h2 class="font-label-sm text-label-sm uppercase font-semibold tracking-wider text-[#b45309]">Needs attention</h2>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Item 1 -->
+<div class="flex items-center justify-between gap-3 p-2 rounded-lg bg-white/80 border border-[#fde68a]/60 hover:bg-white transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="relative flex h-2.5 w-2.5 shrink-0">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ef4444] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#ef4444]"></span>
+</span>
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate">
+<strong class="font-semibold text-[#0f172a]">Fix payment API:</strong> overdue by 3 days, no owner
+                  </span>
+</div>
+<span class="shrink-0 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide bg-[#fee2e2] text-[#b91c1c] border border-[#fecaca]">Overdue 3d</span>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between gap-3 p-2 rounded-lg bg-white/80 border border-[#fde68a]/60 hover:bg-white transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-[#ef4444] shrink-0"></span>
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate">
+<strong class="font-semibold text-[#0f172a]">Production Redis migration:</strong> blocked on AWS IAM role policy approval
+                  </span>
+</div>
+<span class="shrink-0 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide bg-[#fee2e2] text-[#b91c1c] border border-[#fecaca]">Blocked</span>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between gap-3 p-2 rounded-lg bg-white/80 border border-[#fde68a]/60 hover:bg-white transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b] shrink-0"></span>
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate">
+<strong class="font-semibold text-[#0f172a]">OAuth2 provider refresh:</strong> pending security audit review sign-off
+                  </span>
+</div>
+<span class="shrink-0 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide bg-[#fef3c7] text-[#b45309] border border-[#fde68a]">Due Nov 2</span>
+</div>
+</div>
+</section>
+<!-- BY LIST (2-Column Grid) -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-sm text-label-sm uppercase font-semibold tracking-wider text-[#64748b]">By List breakdown</span>
+<span class="font-label-sm text-label-sm text-[#64748b]">6 active swimlanes</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+<!-- Card 1: Resources -->
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] shadow-sm hover:border-[#cbd5e1] transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-[#0f172a] truncate">📚 Resources (Start Here!)</span>
+<span class="px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] font-label-sm font-medium border border-[#e2e8f0]">4</span>
+</div>
+<p class="font-body-sm text-body-sm text-[#64748b] line-clamp-1 mt-0.5">Essential docs, Figma files, and engineering guidelines</p>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Brand token v2.3 spec</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Alex R.">
+<div class="w-5 h-5 rounded-full bg-[#e2dfff] text-[#3533b0] font-label-sm flex items-center justify-center text-[10px] font-bold">AR</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Sprint roadmap Q4</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Aarav P.">
+<div class="w-5 h-5 rounded-full bg-[#ffddb8] text-[#754900] font-label-sm flex items-center justify-center text-[10px] font-bold">AP</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Questions For Next Meeting -->
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] shadow-sm hover:border-[#cbd5e1] transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-[#0f172a] truncate">🌊 Questions For Next Meeting</span>
+<span class="px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] font-label-sm font-medium border border-[#e2e8f0]">2</span>
+</div>
+<p class="font-body-sm text-body-sm text-[#64748b] line-clamp-1 mt-0.5">Architecture review topics for sprint sync</p>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Evaluate WebSocket latency</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Maya K.">
+<div class="w-5 h-5 rounded-full bg-[#6cf8bb] text-[#00714d] font-label-sm flex items-center justify-center text-[10px] font-bold">MK</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">GraphQL schema review</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Liam T.">
+<div class="w-5 h-5 rounded-full bg-[#e2dfff] text-[#3533b0] font-label-sm flex items-center justify-center text-[10px] font-bold">LT</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: To Do -->
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] shadow-sm hover:border-[#cbd5e1] transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-[#0f172a] truncate">🔮 To Do</span>
+<span class="px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] font-label-sm font-medium border border-[#e2e8f0]">5</span>
+</div>
+<p class="font-body-sm text-body-sm text-[#64748b] line-clamp-1 mt-0.5">Planned work ready to be pulled</p>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">OAuth2 provider refresh</span>
+<div class="flex items-center gap-1.5 shrink-0">
+<span class="px-1.5 py-0.2 rounded text-[10px] bg-[#fef3c7] text-[#b45309] font-medium border border-[#fde68a]">Nov 2</span>
+<div class="w-5 h-5 rounded-full bg-[#e2dfff] text-[#3533b0] font-label-sm flex items-center justify-center text-[10px] font-bold" title="Sarah K.">SK</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc]/50 border border-dashed border-[#cbd5e1] text-[#64748b]">
+<span class="font-body-sm text-body-sm truncate pr-2">Review analytics ingestion pipeline</span>
+<div class="flex items-center gap-1 shrink-0" title="Unassigned">
+<div class="w-5 h-5 rounded-full bg-[#f1f5f9] text-[#94a3b8] font-label-sm flex items-center justify-center text-[11px] font-semibold border border-[#e2e8f0]">?</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 4: Pending -->
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] shadow-sm hover:border-[#cbd5e1] transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-[#0f172a] truncate">💬 Pending</span>
+<span class="px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] font-label-sm font-medium border border-[#e2e8f0]">3</span>
+</div>
+<p class="font-body-sm text-body-sm text-[#64748b] line-clamp-1 mt-0.5">Waiting on client approval or security feedback</p>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Webhook retry exponential backoff</span>
+<div class="flex items-center gap-1.5 shrink-0">
+<span class="px-1.5 py-0.2 rounded text-[10px] bg-[#fef3c7] text-[#b45309] font-medium border border-[#fde68a]">Due soon</span>
+<div class="w-5 h-5 rounded-full bg-[#ffddb8] text-[#754900] font-label-sm flex items-center justify-center text-[10px] font-bold" title="Elena M.">EM</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Audit log schema exports</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Aarav P.">
+<div class="w-5 h-5 rounded-full bg-[#e2dfff] text-[#3533b0] font-label-sm flex items-center justify-center text-[10px] font-bold">AP</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 5: Blocked -->
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] shadow-sm hover:border-[#cbd5e1] transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-[#0f172a] truncate">🚷 Blocked</span>
+<span class="px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] font-label-sm font-medium border border-[#e2e8f0]">2</span>
+</div>
+<p class="font-body-sm text-body-sm text-[#64748b] line-clamp-1 mt-0.5">Waiting on external blockers or credentials</p>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Fix payment API</span>
+<div class="flex items-center gap-1 shrink-0">
+<span class="px-1.5 py-0.2 rounded text-[10px] bg-[#fee2e2] text-[#b91c1c] font-medium border border-[#fecaca]">Overdue</span>
+<div class="w-5 h-5 rounded-full bg-[#f1f5f9] text-[#94a3b8] flex items-center justify-center text-[11px] font-semibold border border-[#e2e8f0]" title="Unassigned">?</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Production Redis migration</span>
+<div class="flex items-center gap-1.5 shrink-0">
+<span class="px-1.5 py-0.2 rounded text-[10px] bg-[#fee2e2] text-[#b91c1c] font-medium border border-[#fecaca]">Blocked</span>
+<div class="w-5 h-5 rounded-full bg-[#e2dfff] text-[#3533b0] font-label-sm flex items-center justify-center text-[10px] font-bold" title="David S.">DS</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 6: Done -->
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] shadow-sm hover:border-[#cbd5e1] transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-[#0f172a] truncate">✨ Done</span>
+<span class="px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#475569] font-label-sm font-medium border border-[#e2e8f0]">5</span>
+</div>
+<p class="font-body-sm text-body-sm text-[#64748b] line-clamp-1 mt-0.5">Shipped to staging or production this sprint</p>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Mobile responsive drawer spec</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Priya N.">
+<div class="w-5 h-5 rounded-full bg-[#ffddb8] text-[#754900] font-label-sm flex items-center justify-center text-[10px] font-bold">PN</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded-lg bg-[#f8fafc] border border-[#f1f5f9]">
+<span class="font-body-sm text-body-sm text-[#1e293b] truncate pr-2">Dark theme token map</span>
+<div class="flex items-center gap-1.5 shrink-0" title="Aarav P.">
+<div class="w-5 h-5 rounded-full bg-[#e2dfff] text-[#3533b0] font-label-sm flex items-center justify-center text-[10px] font-bold">AP</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- 2. LOADING STATE (Simulated pulsing skeletons in overview, preserved structure) -->
+<div class="space-y-5 hidden" id="stateLoading">
+<!-- Overview shimmering skeleton -->
+<section class="rounded-xl p-4 bg-[#f4f5ff] border border-[#e0e7ff] animate-pulse">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-[#5b5bd6] text-[20px] mt-0.5 shrink-0 animate-spin">sync</span>
+<div class="flex-1 space-y-2.5 pt-0.5">
+<div class="h-3.5 bg-[#e0e7ff] rounded w-full"></div>
+<div class="h-3.5 bg-[#e0e7ff] rounded w-4/5"></div>
+</div>
+</div>
+</section>
+<!-- Attention skeleton -->
+<section class="rounded-xl p-4 bg-[#fffbeb] border border-[#fef3c7] animate-pulse space-y-3">
+<div class="h-3 bg-[#fde68a] rounded w-32"></div>
+<div class="h-9 bg-white/80 rounded-lg w-full border border-[#fde68a]/50"></div>
+<div class="h-9 bg-white/80 rounded-lg w-full border border-[#fde68a]/50"></div>
+</section>
+<!-- List cards still visible but dimmed -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 opacity-60">
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] h-32 flex flex-col justify-between">
+<div class="h-4 bg-[#f1f5f9] rounded w-1/2"></div>
+<div class="h-10 bg-[#f8fafc] rounded border border-[#f1f5f9]"></div>
+</div>
+<div class="bg-white rounded-xl p-3.5 border border-[#e2e8f0] h-32 flex flex-col justify-between">
+<div class="h-4 bg-[#f1f5f9] rounded w-1/2"></div>
+<div class="h-10 bg-[#f8fafc] rounded border border-[#f1f5f9]"></div>
+</div>
+</div>
+</div>
+<!-- 3. EMPTY STATE -->
+<div class="py-12 flex flex-col items-center justify-center text-center space-y-4 hidden" id="stateEmpty">
+<div class="w-14 h-14 rounded-2xl bg-[#f2f3ff] border border-[#e2dfff] flex items-center justify-center text-[#5b5bd6] shadow-sm">
+<span class="material-symbols-outlined text-[32px]">task_alt</span>
+</div>
+<div class="max-w-sm space-y-1">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-[#0f172a]">No board activity recorded</h3>
+<p class="font-body-md text-body-md text-[#64748b]">Add a few cards to get a summary and workflow diagnosis.</p>
+</div>
+<button class="mt-2 px-4 py-2 rounded-lg bg-[#5b5bd6] text-white font-headline-sm text-body-md font-semibold hover:bg-[#4e4ec9] flex items-center gap-1.5 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            Create card
+          </button>
+</div>
+<!-- 4. ERROR STATE -->
+<div class="py-10 flex flex-col items-center justify-center text-center space-y-4 hidden" id="stateError">
+<div class="w-14 h-14 rounded-2xl bg-[#fee2e2] border border-[#fecaca] flex items-center justify-center text-[#b91c1c] shadow-sm">
+<span class="material-symbols-outlined text-[32px]">sync_problem</span>
+</div>
+<div class="max-w-sm space-y-1">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-[#0f172a]">Unable to generate summary</h3>
+<p class="font-body-md text-body-md text-[#64748b]">Could not fetch latest board changes. The real-time synchronization socket encountered a timeout.</p>
+</div>
+<button class="mt-2 px-4 py-2 rounded-lg bg-white text-[#1e293b] border border-[#cbd5e1] font-body-md font-medium hover:bg-[#f8fafc] flex items-center gap-1.5 transition-all shadow-sm" onclick="setModalState('normal')" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+            Retry connection
+          </button>
+</div>
+</div>
+<!-- FIXED FOOTER -->
+<footer class="px-6 py-3.5 bg-white border-t border-[#f1f5f9] flex flex-wrap items-center justify-between gap-3 shrink-0 z-10">
+<!-- Left indicator -->
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f59e0b] opacity-60"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-[#f59e0b]"></span>
+</span>
+<span class="font-label-sm text-label-sm text-[#b45309] font-medium">Board changed since this summary</span>
+</div>
+<!-- Right action buttons -->
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-lg border border-[#cbd5e1] text-[#334155] font-body-sm font-medium hover:bg-[#f8fafc] flex items-center gap-1.5 transition-colors shadow-sm" id="copyBtn" onclick="triggerCopyFeedback()" type="button">
+<span class="material-symbols-outlined text-[17px] text-[#64748b]" id="copyIcon">content_copy</span>
+<span id="copyText">Copy</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg bg-[#5b5bd6] text-white font-body-sm font-semibold hover:bg-[#4e4ec9] flex items-center gap-1.5 transition-all shadow-sm" onclick="setModalState('loading'); setTimeout(() =&gt; setModalState('normal'), 800);" type="button">
+<span class="material-symbols-outlined text-[17px]">refresh</span>
+<span>Refresh</span>
+</button>
+</div>
+</footer>
+</div>
+</div>
+<!-- INTERACTIVE STATE SWITCHER BAR (Pinned Floating Pill for Demo & Testing) -->
+<script>
+    function setModalState(state) {
+      // Hide all states
+      document.getElementById('stateNormal').classList.add('hidden');
+      document.getElementById('stateLoading').classList.add('hidden');
+      document.getElementById('stateEmpty').classList.add('hidden');
+      document.getElementById('stateError').classList.add('hidden');
+
+      // Show selected state
+      if (state === 'normal') document.getElementById('stateNormal').classList.remove('hidden');
+      if (state === 'loading') document.getElementById('stateLoading').classList.remove('hidden');
+      if (state === 'empty') document.getElementById('stateEmpty').classList.remove('hidden');
+      if (state === 'error') document.getElementById('stateError').classList.remove('hidden');
+
+      // Update button styling
+      document.querySelectorAll('.state-btn').forEach(btn => {
+        if (btn.getAttribute('data-state') === state) {
+          btn.className = 'state-btn active-state px-2.5 py-1 rounded-full text-xs font-medium transition-all bg-[#5b5bd6] text-white shadow-sm';
+        } else {
+          btn.className = 'state-btn px-2.5 py-1 rounded-full text-xs font-medium text-[#64748b] hover:text-[#0f172a] transition-all';
+        }
+      });
+    }
+
+    let isMobileSheet = false;
+    function toggleMobileSheet() {
+      const container = document.getElementById('modalContainer');
+      const backdrop = document.getElementById('modalBackdrop');
+      const toggleBtn = document.getElementById('sheetToggleBtn');
+      isMobileSheet = !isMobileSheet;
+
+      if (isMobileSheet) {
+        // Transform to bottom sheet layout
+        backdrop.classList.remove('items-center');
+        backdrop.classList.add('items-end', 'p-0');
+        container.classList.remove('max-w-[720px]', 'rounded-2xl');
+        container.classList.add('max-w-full', 'w-full', 'rounded-t-2xl', 'rounded-b-none', 'max-h-[921px]');
+        if (toggleBtn) {
+          toggleBtn.classList.add('bg-[#6cf8bb]', 'text-[#00714d]');
+        }
+      } else {
+        // Return to centered desktop modal
+        backdrop.classList.add('items-center');
+        backdrop.classList.remove('items-end', 'p-0');
+        container.classList.add('max-w-[720px]', 'rounded-2xl');
+        container.classList.remove('max-w-full', 'w-full', 'rounded-t-2xl', 'rounded-b-none', 'max-h-[921px]');
+        if (toggleBtn) {
+          toggleBtn.classList.remove('bg-[#6cf8bb]', 'text-[#00714d]');
+        }
+      }
+    }
+
+    function triggerCopyFeedback() {
+      const icon = document.getElementById('copyIcon');
+      const text = document.getElementById('copyText');
+      icon.innerText = 'check';
+      text.innerText = 'Copied!';
+      setTimeout(() => {
+        icon.innerText = 'content_copy';
+        text.innerText = 'Copy';
+      }, 1600);
+    }
+  </script>
+</div></main></div>
+</body></html>
