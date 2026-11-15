@@ -1,6 +1,9 @@
 # Build Stage
 FROM node:20-alpine AS builder
 
+# Install OpenSSL and libc compatibility for Prisma engine
+RUN apk add --no-cache openssl libc6-compat
+
 WORKDIR /app
 
 # Copy package manifests
@@ -23,6 +26,9 @@ RUN npm run build
 
 # Production Runner Stage
 FROM node:20-alpine AS runner
+
+# Install OpenSSL and libc compatibility for Prisma runtime
+RUN apk add --no-cache openssl libc6-compat
 
 WORKDIR /app
 ENV NODE_ENV=production
@@ -50,7 +56,7 @@ RUN mkdir -p /app/server/uploads
 EXPOSE 4000
 
 ENV PORT=4000
-ENV DATABASE_URL="file:./dev.db"
+ENV DATABASE_URL="file:/app/server/prisma/dev.db"
 
 # Push schema changes and start server
 CMD ["sh", "-c", "npx prisma db push --schema=server/prisma/schema.prisma && node server/dist/server.js"]
