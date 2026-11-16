@@ -56,7 +56,6 @@ RUN mkdir -p /app/server/uploads
 EXPOSE 4000
 
 ENV PORT=4000
-ENV DATABASE_URL="file:/app/server/prisma/dev.db"
 
-# Push schema changes and start server
-CMD ["sh", "-c", "npx prisma db push --schema=server/prisma/schema.prisma && node server/dist/server.js"]
+# Deploy database migrations and start server in production
+CMD ["sh", "-c", "npx prisma migrate deploy --schema=server/prisma/schema.prisma && node server/dist/server.js"]

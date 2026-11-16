@@ -13,17 +13,29 @@ import templateRoutes from './routes/templateRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { AppError, sendError } from './utils/errors.js';
 import { uploadsDir } from './utils/upload.js';
+import { prisma } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const app = express();
 
+// Trust reverse proxy (e.g. Render, Railway, Vercel, load balancers)
+app.set('trust proxy', 1);
+
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const allowedOrigins = CLIENT_URL.split(',').map((u) => u.trim());
 
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, same-origin static requests)
+      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        callback(null, origin || true);
+      } else {
+        callback(null, false);
+      }
+    },
     credentials: true,
   })
 );
@@ -34,10 +46,28 @@ app.use(express.json());
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadsDir));
 
-// Health check endpoint
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// Database-aware Health check endpoint
+const healthHandler = async (_req: Request, res: Response) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({
+      status: 'ok',
+      database: 'connected',
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    console.error('Health check failed - database disconnected:', err);
+    res.status(503).json({
+      status: 'error',
+      database: 'disconnected',
+      error: err?.message || 'Database unavailable',
+      timestamp: new Date().toISOString(),
+    });
+  }
+};
+
+app.get('/health', healthHandler);
+app.get('/api/health', healthHandler);
 
 // Mount Routes
 app.use('/api/auth', authRoutes);

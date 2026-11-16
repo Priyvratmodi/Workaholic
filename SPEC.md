@@ -421,3 +421,14 @@ Verify each in the browser before declaring the project done.
 - Prefer boring, well-documented libraries over clever custom code.
 - When a requirement is ambiguous, state your assumption in the Plan instead of guessing silently.
 - Keep `README.md` current: setup, env vars, scripts, test commands, demo logins.
+
+---
+
+## 17. Deployment and persistence
+
+- **Zero Ephemeral State:** Never store persistent application data on the server filesystem. Container disks on PaaS providers like Render are ephemeral and wiped clean on restarts, memory reloads, and deployments.
+- **Production Database:** PostgreSQL is strictly mandatory in production. SQLite (`dev.db`) is not permitted in production environments.
+- **Schema Migrations:** Database migrations in production must strictly run via `npx prisma migrate deploy` on startup. Never run `prisma migrate reset` or `db push --force-reset` in production.
+- **Environment Secrets:** Secrets (`JWT_SECRET`, `DATABASE_URL`, `GEMINI_API_KEY`) must strictly be injected via environment variables. The server must fail fast and refuse to start in production if `JWT_SECRET` or `DATABASE_URL` is omitted.
+- **Reverse Proxy & Cookies:** The server must configure `trust proxy` (e.g. `app.set('trust proxy', 1)`) so that `secure` session cookies are correctly transmitted through Render's TLS-terminating load balancer. When frontend and API reside on distinct origins, cookies must use `SameSite=None` with `Secure=true`.
+- **Idempotent Seeding:** Seed scripts must use idempotent operations (`upsert`) and must refuse execution when `NODE_ENV=production` unless explicitly forced via override flags. Seed scripts must never be triggered automatically during production boot.

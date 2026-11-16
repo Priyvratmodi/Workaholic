@@ -1,7 +1,20 @@
 import jwt from 'jsonwebtoken';
 import { Response } from 'express';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'workaholic_jwt_secret_dev_key';
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        'FATAL: JWT_SECRET environment variable is missing in production! Refusing to start.'
+      );
+    }
+    return 'workaholic_jwt_secret_dev_key';
+  }
+  return secret;
+}
+
+const JWT_SECRET = getJwtSecret();
 const COOKIE_NAME = 'workaholic_token';
 
 export interface TokenPayload {
@@ -23,7 +36,13 @@ export function verifyToken(token: string): TokenPayload | null {
 
 export function setAuthCookie(res: Response, token: string) {
   const isProduction = process.env.NODE_ENV === 'production';
-  const sameSite = (process.env.COOKIE_SAME_SITE as 'lax' | 'none' | 'strict') || (isProduction ? 'none' : 'lax');
+  let sameSite: 'lax' | 'none' | 'strict' = 'lax';
+  if (process.env.COOKIE_SAME_SITE) {
+    sameSite = process.env.COOKIE_SAME_SITE as 'lax' | 'none' | 'strict';
+  } else if (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes('localhost')) {
+    sameSite = 'none';
+  }
+
   const secure = isProduction ? true : sameSite === 'none';
 
   res.cookie(COOKIE_NAME, token, {
@@ -37,7 +56,13 @@ export function setAuthCookie(res: Response, token: string) {
 
 export function clearAuthCookie(res: Response) {
   const isProduction = process.env.NODE_ENV === 'production';
-  const sameSite = (process.env.COOKIE_SAME_SITE as 'lax' | 'none' | 'strict') || (isProduction ? 'none' : 'lax');
+  let sameSite: 'lax' | 'none' | 'strict' = 'lax';
+  if (process.env.COOKIE_SAME_SITE) {
+    sameSite = process.env.COOKIE_SAME_SITE as 'lax' | 'none' | 'strict';
+  } else if (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes('localhost')) {
+    sameSite = 'none';
+  }
+
   const secure = isProduction ? true : sameSite === 'none';
 
   res.clearCookie(COOKIE_NAME, {

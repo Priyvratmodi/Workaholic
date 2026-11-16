@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ADD COLUMN "themePreference" TEXT NOT NULL DEFAULT 'SYSTEM';
-ALTER TABLE "User" ADD COLUMN "reduceMotion" BOOLEAN NOT NULL DEFAULT false;

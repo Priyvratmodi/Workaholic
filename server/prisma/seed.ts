@@ -5,47 +5,48 @@ import { PROJECT_MANAGEMENT_TEMPLATE } from '@workaholic/shared';
 
 const prisma = new PrismaClient();
 
+const SEED_BOARD_ID = '9390d770-7d29-41fa-9b81-f363406ada9f';
+
 async function main() {
-  console.log('🌱 Starting database seed...');
+  // 1. Production safety guard
+  if (process.env.NODE_ENV === 'production' && process.env.ALLOW_PRODUCTION_SEED !== 'true') {
+    console.warn('⚠️ Database seeding is disabled in production to protect existing data.');
+    console.warn('   To run manually, specify ALLOW_PRODUCTION_SEED=true.');
+    return;
+  }
 
-  // 1. Clean up existing data
-  await prisma.activity.deleteMany();
-  await prisma.comment.deleteMany();
-  await prisma.attachment.deleteMany();
-  await prisma.checklistItem.deleteMany();
-  await prisma.checklist.deleteMany();
-  await prisma.cardLabel.deleteMany();
-  await prisma.cardMember.deleteMany();
-  await prisma.card.deleteMany();
-  await prisma.list.deleteMany();
-  await prisma.label.deleteMany();
-  await prisma.boardStar.deleteMany();
-  await prisma.boardMember.deleteMany();
-  await prisma.invitation.deleteMany();
-  await prisma.board.deleteMany();
-  await prisma.template.deleteMany();
-  await prisma.user.deleteMany();
+  console.log('🌱 Starting idempotent database seed...');
 
-  // 2. Seed Default Template
-  console.log('Seeding Template...');
-  await prisma.template.create({
-    data: {
+  // 2. Seed Default Template (Upsert)
+  console.log('Upserting Default Template...');
+  await prisma.template.upsert({
+    where: { id: PROJECT_MANAGEMENT_TEMPLATE.id },
+    update: {
+      name: PROJECT_MANAGEMENT_TEMPLATE.name,
+      tagline: PROJECT_MANAGEMENT_TEMPLATE.tagline,
+      description: PROJECT_MANAGEMENT_TEMPLATE.description,
+      structure: JSON.stringify(PROJECT_MANAGEMENT_TEMPLATE),
+      isDefault: true,
+    },
+    create: {
       id: PROJECT_MANAGEMENT_TEMPLATE.id,
       name: PROJECT_MANAGEMENT_TEMPLATE.name,
       tagline: PROJECT_MANAGEMENT_TEMPLATE.tagline,
       description: PROJECT_MANAGEMENT_TEMPLATE.description,
-      isDefault: true,
       structure: JSON.stringify(PROJECT_MANAGEMENT_TEMPLATE),
+      isDefault: true,
     },
   });
 
-  // 3. Seed Demo Users
-  console.log('Seeding Demo Users...');
+  // 3. Seed Demo Users (Upsert by unique email)
+  console.log('Upserting Demo Users...');
   const defaultPassword = 'password123';
   const passwordHash = await bcrypt.hash(defaultPassword, 10);
 
-  const owner = await prisma.user.create({
-    data: {
+  const owner = await prisma.user.upsert({
+    where: { email: 'owner@workaholic.test' },
+    update: { name: 'Aarav Patel' },
+    create: {
       name: 'Aarav Patel',
       email: 'owner@workaholic.test',
       passwordHash,
@@ -54,8 +55,10 @@ async function main() {
     },
   });
 
-  const member = await prisma.user.create({
-    data: {
+  const member = await prisma.user.upsert({
+    where: { email: 'member@workaholic.test' },
+    update: { name: 'Jessica Diaz' },
+    create: {
       name: 'Jessica Diaz',
       email: 'member@workaholic.test',
       passwordHash,
@@ -64,8 +67,10 @@ async function main() {
     },
   });
 
-  const viewer = await prisma.user.create({
-    data: {
+  const viewer = await prisma.user.upsert({
+    where: { email: 'viewer@workaholic.test' },
+    update: { name: 'Sophia Liu' },
+    create: {
       name: 'Sophia Liu',
       email: 'viewer@workaholic.test',
       passwordHash,
@@ -74,23 +79,38 @@ async function main() {
     },
   });
 
-  console.log('Users created:');
+  console.log('Users ready:');
   console.log('  Owner:  owner@workaholic.test (password: password123)');
   console.log('  Member: member@workaholic.test (password: password123)');
   console.log('  Viewer: viewer@workaholic.test (password: password123)');
 
-  // 4. Create Sample Board: "Project Management"
+  // 4. Seed Sample Board: "Project Management" (Idempotent check)
+  const existingBoard = await prisma.board.findUnique({
+    where: { id: SEED_BOARD_ID },
+  });
+
+  if (existingBoard) {
+    console.log('ℹ️ Sample Board already exists, skipping creation.');
+    console.log('✅ Seed completed idempotently without resetting any data.');
+    return;
+  }
+
   console.log('Seeding Sample Board...');
   const board = await prisma.board.create({
     data: {
+      id: SEED_BOARD_ID,
       title: 'Project Management',
       background: 'gradient-1',
     },
   });
 
   // Star board for owner
-  await prisma.boardStar.create({
-    data: {
+  await prisma.boardStar.upsert({
+    where: {
+      boardId_userId: { boardId: board.id, userId: owner.id },
+    },
+    update: {},
+    create: {
       boardId: board.id,
       userId: owner.id,
     },
@@ -103,6 +123,7 @@ async function main() {
       { boardId: board.id, userId: member.id, role: 'member' },
       { boardId: board.id, userId: viewer.id, role: 'viewer' },
     ],
+    skipDuplicates: true,
   });
 
   // 5. Seed Board Labels
@@ -114,7 +135,7 @@ async function main() {
     prisma.label.create({ data: { boardId: board.id, name: 'Research', color: '#579DFF' } }),
   ]);
 
-  const [lblDesign, lblHighPri, lblEng, lblContent, lblResearch] = labels;
+  const [lblDesign, lblHighPri, lblEng, lblContent, _lblResearch] = labels;
 
   // 6. Seed the 6 Template Lists and Starter Cards
   let lastListPos: string | null = null;
@@ -151,7 +172,7 @@ async function main() {
 
   // Extra in Resources
   let pos = generateKeyBetween(null, null);
-  const cardSpecs = await prisma.card.create({
+  await prisma.card.create({
     data: {
       listId: listResources.id,
       title: 'Project brief & specs',
@@ -211,7 +232,7 @@ async function main() {
     },
   });
 
-  const cardDocs = await prisma.card.create({
+  await prisma.card.create({
     data: {
       listId: listTodo.id,
       title: 'Write REST API documentation and Zod schema guides',
@@ -321,7 +342,7 @@ async function main() {
     ],
   });
 
-  console.log('✅ Seed complete! All demo data created successfully.');
+  console.log('✅ Seed complete! All demo data created/verified successfully.');
 }
 
 main()
