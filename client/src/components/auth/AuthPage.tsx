@@ -5,7 +5,6 @@ import { apiRequest, ApiError } from '../../api/client.js';
 import { UserSummary } from '@workaholic/shared';
 import { Icon } from '../ui/Icon.js';
 import { Avatar } from '../ui/Avatar.js';
-import { GoogleLogo } from '../../utils/googleLogo.js';
 
 export interface AuthPageProps {
   initialMode?: 'login' | 'register';
@@ -149,25 +148,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ initialMode = 'login' }) => 
               </div>
             </div>
 
-            {/* Social SSO Button */}
-            <button
-              type="button"
-              onClick={() => handleDemoLogin('owner@workaholic.test')}
-              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-surface-container-low hover:bg-surface-container text-text-primary font-medium text-xs sm:text-sm transition duration-200 border border-border shadow-2xs"
-            >
-              <GoogleLogo className="w-4 h-4" />
-              <span>Continue with Google</span>
-            </button>
-
-            {/* Divider */}
-            <div className="relative flex items-center my-4">
-              <div className="flex-grow h-px bg-border"></div>
-              <span className="flex-shrink mx-3 text-[11px] text-text-muted uppercase tracking-wider font-mono">
-                or continue with email
-              </span>
-              <div className="flex-grow h-px bg-border"></div>
-            </div>
-
+            {/* Error Banner */}
             {error && (
               <div className="mb-4 p-3 rounded-xl bg-accent-danger/10 border border-accent-danger/30 text-accent-danger text-xs flex items-center gap-2">
                 <Icon name="error" size={16} />
