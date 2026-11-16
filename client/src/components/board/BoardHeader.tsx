@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BoardBundle } from '@workaholic/shared';
+import { deleteBoard } from '../../api/boards.js';
 import { Icon } from '../ui/Icon.js';
 import { AvatarStack } from '../ui/Avatar.js';
 import { AccountMenu } from '../navigation/AccountMenu.js';
+import { DeleteBoardModal } from './DeleteBoardModal.js';
 
 interface BoardHeaderProps {
   board: BoardBundle;
@@ -30,6 +32,7 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
 }) => {
   const navigate = useNavigate();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [titleInput, setTitleInput] = useState(board.title);
   const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -178,6 +181,20 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
             </button>
           )}
 
+          {/* Delete Board Button (Owner only) */}
+          {isOwner && (
+            <button
+              type="button"
+              onClick={() => setIsDeleteModalOpen(true)}
+              aria-label="Delete Board"
+              className="flex items-center gap-1.5 bg-accent-danger/10 hover:bg-accent-danger/20 text-accent-danger border border-accent-danger/30 text-xs font-semibold px-3 py-1.5 rounded-xl shadow-2xs transition-all"
+              title="Delete Board"
+            >
+              <Icon name="delete" size={16} />
+              <span className="hidden sm:inline">Delete</span>
+            </button>
+          )}
+
           {/* AI Board Summary Button */}
           {onOpenAISummary && (
             <button
@@ -213,6 +230,19 @@ export const BoardHeader: React.FC<BoardHeaderProps> = ({
           <AccountMenu />
         </div>
       </header>
+
+      {/* Delete Board Confirmation Modal */}
+      {isOwner && (
+        <DeleteBoardModal
+          isOpen={isDeleteModalOpen}
+          boardTitle={board.title}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={async () => {
+            await deleteBoard(board.id);
+            navigate('/boards');
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BoardSummary } from '@workaholic/shared';
-import { fetchBoards, starBoard, unstarBoard } from '../../api/boards.js';
+import { fetchBoards, starBoard, unstarBoard, deleteBoard } from '../../api/boards.js';
 import { useAuthStore } from '../../stores/authStore.js';
 import { CreateBoardModal } from './CreateBoardModal.js';
+import { DeleteBoardModal } from '../board/DeleteBoardModal.js';
 import { getBackgroundPreviewClass } from '../../utils/backgrounds.js';
 import { Icon } from '../ui/Icon.js';
 import { Avatar, AvatarStack } from '../ui/Avatar.js';
@@ -20,6 +21,7 @@ export const DashboardPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'recent' | 'alpha' | 'tasks'>('recent');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [boardToDelete, setBoardToDelete] = useState<BoardSummary | null>(null);
 
   const loadBoards = async () => {
     try {
@@ -32,6 +34,13 @@ export const DashboardPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDeleteBoard = async () => {
+    if (!boardToDelete) return;
+    await deleteBoard(boardToDelete.id);
+    setBoardToDelete(null);
+    await loadBoards();
   };
 
   useEffect(() => {
@@ -255,8 +264,8 @@ export const DashboardPage: React.FC = () => {
                     {sortBy === 'recent'
                       ? 'Recently updated'
                       : sortBy === 'alpha'
-                      ? 'Alphabetical (A-Z)'
-                      : 'Most active tasks'}
+                        ? 'Alphabetical (A-Z)'
+                        : 'Most active tasks'}
                   </span>
                   <Icon name="expand_more" size={16} className="text-text-muted" />
                 </button>
@@ -370,6 +379,14 @@ export const DashboardPage: React.FC = () => {
                     board={b}
                     onOpen={() => navigate(`/boards/${b.id}`)}
                     onToggleStar={(e) => handleToggleStar(e, b)}
+                    onDelete={
+                      b.userRole === 'owner'
+                        ? (e) => {
+                          e.stopPropagation();
+                          setBoardToDelete(b);
+                        }
+                        : undefined
+                    }
                   />
                 ))}
 
@@ -401,6 +418,16 @@ export const DashboardPage: React.FC = () => {
         onClose={() => setIsCreateModalOpen(false)}
         onSuccess={loadBoards}
       />
+
+      {/* Delete Board Modal */}
+      {boardToDelete && (
+        <DeleteBoardModal
+          isOpen={!!boardToDelete}
+          boardTitle={boardToDelete.title}
+          onClose={() => setBoardToDelete(null)}
+          onConfirm={handleDeleteBoard}
+        />
+      )}
     </div>
   );
 };
@@ -409,67 +436,82 @@ interface BoardCardProps {
   board: BoardSummary;
   onOpen: () => void;
   onToggleStar: (e: React.MouseEvent) => void;
+  onDelete?: (e: React.MouseEvent) => void;
 }
 
-const BoardCard: React.FC<BoardCardProps> = ({ board, onOpen, onToggleStar }) => {
-  const previewClass = getBackgroundPreviewClass(board.background);
+  const BoardCard: React.FC<BoardCardProps> = ({ board, onOpen, onToggleStar, onDelete }) => {
+    const previewClass = getBackgroundPreviewClass(board.background);
 
-  return (
-    <div
-      onClick={onOpen}
-      className="group relative rounded-2xl bg-card hover:bg-card-hover border border-border hover:border-primary/60 transition-all duration-200 overflow-hidden cursor-pointer flex flex-col shadow-xs hover:shadow-card-hover"
-    >
-      {/* Thumbnail Gradient Header with pastel styling */}
-      <div className={`h-24 w-full board-tile-gradient ${previewClass} p-3 flex items-start justify-between relative`}>
-        {/* Role badge: Solid high-contrast pill on pastel */}
-        <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-white/95 text-text-primary border border-border shadow-2xs select-none">
-          {board.userRole}
-        </span>
-
-        {/* Star Button: Always readable and visible */}
-        <button
-          type="button"
-          onClick={onToggleStar}
-          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-            board.isStarred
-              ? 'bg-white/95 text-primary shadow-2xs'
-              : 'bg-white/90 hover:bg-white text-text-muted hover:text-text-primary shadow-2xs'
-          }`}
-          title={board.isStarred ? 'Unstar board' : 'Star board'}
-        >
-          <Icon
-            name="star"
-            filled={board.isStarred}
-            size={18}
-            className={board.isStarred ? 'text-primary' : 'text-text-muted'}
-          />
-        </button>
-      </div>
-
-      {/* Card Body */}
-      <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
-        <div>
-          <h3 className="text-sm font-semibold text-text-primary group-hover:text-primary transition-colors truncate">
-            {board.title}
-          </h3>
-          <p className="text-xs text-text-muted mt-1 flex items-center gap-1.5">
-            <Icon name="task_alt" size={14} />
-            <span>{board.activeTasksCount} active tasks</span>
-          </p>
-        </div>
-
-        {/* Card Footer: Members Avatars Stack */}
-        <div className="flex items-center justify-between pt-2 border-t border-border/60">
-          <AvatarStack users={board.members} size={28} max={4} />
-
-          <span className="text-[11px] text-text-muted">
-            {new Date(board.updatedAt).toLocaleDateString(undefined, {
-              month: 'short',
-              day: 'numeric',
-            })}
+    return (
+      <div
+        onClick={onOpen}
+        className="group relative rounded-2xl bg-card hover:bg-card-hover border border-border hover:border-primary/60 transition-all duration-200 overflow-hidden cursor-pointer flex flex-col shadow-xs hover:shadow-card-hover"
+      >
+        {/* Thumbnail Gradient Header with pastel styling */}
+        <div className={`h-24 w-full board-tile-gradient ${previewClass} p-3 flex items-start justify-between relative`}>
+          {/* Role badge: Solid high-contrast pill on pastel */}
+          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-white/95 text-text-primary border border-border shadow-2xs select-none">
+            {board.userRole}
           </span>
+
+          <div className="flex items-center gap-1.5">
+            {/* Delete Button (Owner only) */}
+            {board.userRole === 'owner' && onDelete && (
+              <button
+                type="button"
+                onClick={onDelete}
+                className="w-7 h-7 rounded-lg flex items-center justify-center transition-all bg-white/90 hover:bg-accent-danger/20 text-text-muted hover:text-accent-danger shadow-2xs"
+                title="Delete board"
+                aria-label="Delete board"
+              >
+                <Icon name="delete" size={17} />
+              </button>
+            )}
+
+            {/* Star Button: Always readable and visible */}
+            <button
+              type="button"
+              onClick={onToggleStar}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${board.isStarred
+                  ? 'bg-white/95 text-primary shadow-2xs'
+                  : 'bg-white/90 hover:bg-white text-text-muted hover:text-text-primary shadow-2xs'
+                }`}
+              title={board.isStarred ? 'Unstar board' : 'Star board'}
+            >
+              <Icon
+                name="star"
+                filled={board.isStarred}
+                size={18}
+                className={board.isStarred ? 'text-primary' : 'text-text-muted'}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Card Body */}
+        <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
+          <div>
+            <h3 className="text-sm font-semibold text-text-primary group-hover:text-primary transition-colors truncate">
+              {board.title}
+            </h3>
+            <p className="text-xs text-text-muted mt-1 flex items-center gap-1.5">
+              <Icon name="task_alt" size={14} />
+              <span>{board.activeTasksCount} active tasks</span>
+            </p>
+          </div>
+
+          {/* Card Footer: Members Avatars Stack */}
+          <div className="flex items-center justify-between pt-2 border-t border-border/60">
+            <AvatarStack users={board.members} size={28} max={4} />
+
+            <span className="text-[11px] text-text-muted">
+              {new Date(board.updatedAt).toLocaleDateString(undefined, {
+                month: 'short',
+                day: 'numeric',
+              })}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
