@@ -92,7 +92,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ initialMode = 'login' }) => 
                   Workaholic
                 </span>
                 <span className="text-[11px] font-mono text-text-muted tracking-wider uppercase mt-0.5">
-                  Workspace OS
+                  A Project Management Tool
                 </span>
               </div>
             </div>
